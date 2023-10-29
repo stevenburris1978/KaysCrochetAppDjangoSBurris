@@ -3,6 +3,8 @@ from django.contrib import admin
 from .models import Choice, Question
 
 
+admin.site.site_header = "Kay's Crochet Administration"
+
 class ChoiceInline(admin.TabularInline):
     model = Choice
     extra = 3
