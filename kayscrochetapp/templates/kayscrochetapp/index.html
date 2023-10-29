@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Kay's Crochet</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'kayscrochetapp/style.css' %}">
 </head>
 <body>
 {% if latest_question_list %}
