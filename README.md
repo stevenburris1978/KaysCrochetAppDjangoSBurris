@@ -2,6 +2,7 @@
 # Steven Burris
 # 11-10-2023
 # *Final Project SBurris*
+# *Kay's Crochet App*
 
 # *Description*
 ### This app will
@@ -13,6 +14,9 @@ pip install -r requirements.txt
 ```
 
 ## How to run
+python manage.py makemigrations (this will create any SQL entries that need to go into the database)
+python manage.py migrate (this will apply the migrations)
+python manage.py createsuperuser (this will create the administrator login for your /admin side of your project)
 
 # firts initialize the database
 ```
