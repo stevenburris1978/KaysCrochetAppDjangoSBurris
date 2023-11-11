@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- for different devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign UP</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'kayscrochetapp/style.css' %}">
+</head>
+<body>
+    <div>
+        <h1>Sign Up</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+
+            <p>Click Sign In if You Have Already Created an Account</p>
+            <div>
+                <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">Sign In</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

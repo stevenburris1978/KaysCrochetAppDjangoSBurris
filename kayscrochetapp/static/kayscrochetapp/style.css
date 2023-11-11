@@ -3,5 +3,38 @@ li a {
 }
 
 body {
-    background: white url("images/background.png") no-repeat;
+    background: white url("images/background.png") no-repeat center center fixed;
+    background-size: cover;
+    margin: 1rem;
+    padding: 1rem;
+    height: 90%;
+    width: 90%;
+}
+
+nav {
+    padding: 1rem;
+}
+
+h2 {
+    padding: .5rem;
+}
+
+input {
+    margin: .5rem;
+}
+
+fieldset {
+    border: 0.0625rem solid #000;
+    padding: 0.3125rem;
+    margin: .5rem;
+    border-radius: 0.3125rem;
+}
+
+ul {
+    list-style-type: none;
+}
+
+button {
+   margin: .5rem;
+   border-radius: 0.3125rem;
 }
