@@ -43,6 +43,7 @@
 <nav>
     <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
     <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">Home</button>
+    <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">Go To Cart</button>
 
     {% if user.is_authenticated %}
         {# Show the logout button if the user is authenticated #}

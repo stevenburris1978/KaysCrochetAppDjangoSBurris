@@ -111,9 +111,11 @@ def add_to_cart(request, pk):
             if item.pk in cart:
                 # Update the quantity for the existing item
                 cart[item.pk]['quantity'] += quantity
+                # Update the total_price for the existing item
+                cart[item.pk]['total_price'] = str(Decimal(cart[item.pk]['price']) * Decimal(cart[item.pk]['quantity']))
             else:
                 # Add a new entry for the item in the cart
-                cart[item.pk] = {'quantity': quantity, 'price': str(item.price)}
+                cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)),}
 
             # Save the updated cart back to the session
             request.session['kayscrochetapp:cart'] = cart
