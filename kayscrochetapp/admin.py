@@ -13,11 +13,11 @@ class ChoiceInline(admin.TabularInline):
 
 class ItemAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {"fields": ["item_title", "description", "image"]}),
+        (None, {"fields": ["item_title", "description", "image", "price"]}),
         ("Date information", {"fields": ["pub_date"]}),
     ]
     inlines = [ChoiceInline]
-    list_display = ["item_title", "pub_date", "was_published_recently"]
+    list_display = ["item_title", "description", "image", "price", "pub_date", "was_published_recently"]
     list_filter = ["pub_date"]
     search_fields = ["item_title"]
 

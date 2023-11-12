@@ -43,14 +43,14 @@
         <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
         {% endif %}
     </nav>
-    <h2>All Items</h2>
+    <h2>All Items:</h2>
         {% if latest_item_list %}
             <ul>
             {% for item in latest_item_list %}
                 <li>
                     <form>
                         <fieldset>
-                        <legend><h2><a href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></h2></legend>
+                        <legend><h3><a href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></h3></legend>
                         {% if item.image %}
                             <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
                         {% endif %}

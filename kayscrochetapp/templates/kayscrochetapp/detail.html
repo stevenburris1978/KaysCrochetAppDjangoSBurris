@@ -22,6 +22,8 @@
     {% endif %}
     <h4>Description:</h4>
     <p>{{ item.description }}</p>
+    <h4>Price:</h4>
+    <p>${{ item.price }}</p>
     <h4>Published On:</h4>
     <p>{{ item.pub_date }}</p>
     <h4>Click To Like:</h4>
@@ -33,6 +35,11 @@
     <input type="submit" value="Like">
 </fieldset>
 </form>
+<form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add to Cart</button>
+ </form>
 <nav>
     <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
     <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">Home</button>

@@ -9,6 +9,7 @@ class Item(models.Model):
     item_title = models.CharField(max_length=200)
     description = models.TextField()
     image = models.ImageField(upload_to='items/images/', blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     pub_date = models.DateTimeField("date published")
 
     def __str__(self):

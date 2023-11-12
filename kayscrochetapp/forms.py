@@ -9,3 +9,7 @@ class SignUpForm(UserCreationForm):
 class SignInForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class AddToCartForm(forms.Form):
+    quantity = forms.IntegerField(min_value=1, initial=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body>
+  <h1>Cart</h1>
+  {% if items %}
+    <ul>
+      {% for cart_item in items %}
+        <li>
+          {{ cart_item.item.item_title }} - Quantity: {{ cart_item.quantity }} -
+          Price: ${{ cart_item.price|floatformat:2 }} - Total Price: ${{ cart_item.total_price|floatformat:2 }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+</body>
+</html>

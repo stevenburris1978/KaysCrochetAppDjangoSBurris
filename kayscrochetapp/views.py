@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -5,7 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import generic
-from .forms import SignUpForm, SignInForm
+from .forms import SignUpForm, SignInForm, AddToCartForm
 from .models import Choice, Item
 
 
@@ -93,3 +94,52 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('kayscrochetapp:index')
+
+
+def add_to_cart(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+
+    if request.method == 'POST':
+        form = AddToCartForm(request.POST)
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+
+            # Retrieve or initialize the cart dictionary from the session
+            cart = request.session.get('kayscrochetapp:cart', {})
+
+            # Check if the item is already in the cart
+            if item.pk in cart:
+                # Update the quantity for the existing item
+                cart[item.pk]['quantity'] += quantity
+            else:
+                # Add a new entry for the item in the cart
+                cart[item.pk] = {'quantity': quantity, 'price': str(item.price)}
+
+            # Save the updated cart back to the session
+            request.session['kayscrochetapp:cart'] = cart
+
+            return redirect('kayscrochetapp:cart')  # Redirect to the cart page after adding the item
+    else:
+        form = AddToCartForm()
+
+    return render(request, 'kayscrochetapp/detail.html', {'item': item, 'form': form})
+
+
+def cart(request):
+    # Retrieve the cart data from the session
+    cart = request.session.get('kayscrochetapp:cart', {})
+    items = []
+
+    # Assuming you have a model named Item, and you want to display item details in the cart
+    for item_id, item_data in cart.items():
+        item = get_object_or_404(Item, pk=item_id)
+        quantity = item_data['quantity']
+        price_str = item_data['price']
+        # Convert price back to Decimal
+        price = Decimal(price_str)
+        total_price = quantity * price  # Calculate total price for the item
+
+        items.append({'item': item, 'quantity': quantity, 'price': price, 'total_price': total_price})
+
+    context = {'items': items}
+    return render(request, 'kayscrochetapp/cart.html', context)
