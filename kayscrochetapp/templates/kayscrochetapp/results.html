@@ -1,44 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- for different devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'kayscrochetapp/style.css' %}">
-</head>
-<body>
-<h1>{{ item.item_title }} Likes</h1>
+{% extends 'base_generic.html' %}
+
+{% block title %}{{ item.item_title }} Likes{% endblock %}
+
 {% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}!</p>
-{% endif %}
+{% block content %}
+
 <form>
     <fieldset>
-        <legend><h1>{{ item.item_title }}</h1></legend>
+        <legend><h1>{{ item.item_title }}Likes</h1></legend>
         {% if item.image %}
             <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
         {% endif %}
-        <h4>Description:</h4>
-        <p>{{ item.description }}</p>
         <h4>Likes:</h4>
         <ul>
         {% for choice in item.choice_set.all %}
             <li>{{ choice.choice_text }} -- {{ choice.likes }} like{{ choice.likes|pluralize }}</li>
         {% endfor %}
         </ul>
+        <button type="button" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:detail' item.id%}'">Like Again</button>
     </fieldset>
 </form>
-<nav>
-    <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:detail' item.id%}'">Like Again</button>
-    <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">Home</button>
-    {% if user.is_authenticated %}
-        {# Show the logout button if the user is authenticated #}
-        {% include 'kayscrochetapp/signout.html' %}
-    {% else %}
-        {# Show the login and signup links if the user is not authenticated #}
-        <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
-    {% endif %}
-</nav>
-</body>
-</html>
+
+{% endblock %}
+{% endif %}

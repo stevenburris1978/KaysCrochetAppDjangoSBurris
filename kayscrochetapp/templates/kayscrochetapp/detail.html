@@ -1,57 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- for different devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-        {% load static %}
-    <link rel="stylesheet" href="{% static 'kayscrochetapp/style.css' %}">
-</head>
-<body>
-<h1>Kay's Item Details</h1>
+{% extends 'base_generic.html' %}
+
+{% block title %}{{ item.item_title }} Details{% endblock %}
+
 {% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}!</p>
-{% endif %}
-<form action="{% url 'kayscrochetapp:like' item.id %}" method="post">
-{% csrf_token %}
-<fieldset>
-    <legend><h1>{{ item.item_title }}</h1></legend>
-    {% if item.image %}
-        <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
-    {% endif %}
-    <h4>Description:</h4>
-    <p>{{ item.description }}</p>
-    <h4>Price:</h4>
-    <p>${{ item.price }}</p>
-    <h4>Published On:</h4>
-    <p>{{ item.pub_date }}</p>
-    <h4>Click To Like:</h4>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    {% for choice in item.choice_set.all %}
-        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-    {% endfor %}
-    <input type="submit" value="Like">
-</fieldset>
-</form>
+{% block content %}
 <form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Add to Cart</button>
- </form>
-<nav>
-    <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
-    <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">Home</button>
-    <button type="button" class="btn btn-primary" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">Go To Cart</button>
-
-    {% if user.is_authenticated %}
-        {# Show the logout button if the user is authenticated #}
-        {% include 'kayscrochetapp/signout.html' %}
-    {% else %}
-        {# Show the login and signup links if the user is not authenticated #}
-        <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
-    {% endif %}
-</nav>
-</body>
-</html>
+</form>
+<form action="{% url 'kayscrochetapp:like' item.id %}" method="post">
+{% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ item.item_title }} Details</h1></legend>
+        {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
+        {% endif %}
+        <h4>Description:</h4>
+        <p>{{ item.description }}</p>
+        <h4>Price:</h4>
+        <p>${{ item.price }}</p>
+        <h4>Published On:</h4>
+        <p>{{ item.pub_date }}</p>
+        <h4>Click To Like:</h4>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% for choice in item.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor %}
+        <input type="submit" value="Like">
+        <button type="button" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
+    </fieldset>
+</form>
+{% endblock %}
+{% endif %}

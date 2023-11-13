@@ -1,32 +1,36 @@
+{% extends 'base_generic.html' %}
 {% load custom_filters %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cart</title>
-</head>
-<body>
-  <h1>Cart</h1>
-  {% if items %}
-    <ul>
-      {% for cart_item in items %}
-        <li>
-          {{ cart_item.item.item_title }} - Quantity: {{ cart_item.quantity }} -
-          Price: ${{ cart_item.price|floatformat:2 }} -
-          {% if cart_item.total_price %}
-            Total Price: ${{ cart_item.total_price|floatformat:2 }}-
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    <form>
+        <fieldset>
+            <legend><h1>Cart</h1></legend>
+          {% if items %}
+            <ul>
+              {% for cart_item in items %}
+                <li>
+                    <h3>{{ cart_item.item.item_title }}</h3>
+                    {% if cart_item.item.image %}
+                        <img src="{{ cart_item.item.image.url }}" alt="{{ item.item_title }}">
+                    {% endif %}<br>
+                    Quantity: {{ cart_item.quantity }}<br>
+                    Price Each: ${{ cart_item.price|floatformat:2 }}<br>
+                    {% if cart_item.total_price %}
+                        Total Price: ${{ cart_item.total_price|floatformat:2 }}
+                    {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+            {% if items|sum_attribute:'total_price' %}
+                <h4>Total Cart Price:</h4><p> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
+            {% else %}
+              <p>Total Cart Price: $0.00</p>
+            {% endif %}
+          {% else %}
+            <p>Your cart is empty.</p>
           {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-    {% if items|sum_attribute:'total_price' %}
-      <p>Total Cart Price: ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
-    {% else %}
-      <p>Total Cart Price: $0.00</p>
-    {% endif %}
-  {% else %}
-    <p>Your cart is empty.</p>
-  {% endif %}
-</body>
-</html>
+        </fieldset>
+    </form>
+{% endblock %}
