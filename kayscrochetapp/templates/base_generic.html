@@ -15,7 +15,7 @@
 <body class="d-flex flex-column min-vh-100">
     <header class="py-3 sticky-top bg-danger-subtle flex-shrink-0 fixed-top text-center justify-content-center">
         <div class="container-fluid">
-            <h1>Kay's Crochet</h1>
+            <h1 style="margin-top: 1rem">Kay's Crochet</h1>
             {% if user.is_authenticated %}
                 {# Show the user name if the user is authenticated #}
 
@@ -37,7 +37,7 @@
         </div>
     </header>
                         <!-- Button trigger modal -->
-    <button type="button" class="button text-light bg-danger-subtle" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 3rem; margin-left: 47.5%;">
+    <button type="button" class="button text-light bg-danger-subtle fixed-top" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 3rem; margin-left: 47.5%;">
       HELP
     </button>
     <!-- Modal -->
@@ -47,21 +47,22 @@
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">HELP</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <h3>Add to Cart:</h3>
-              <p>Click the item title to add it to the cart</p>
-              <h3>Contact Us:</h3>
-              <p>Click the Instagram and Snapchat icons below to contact Us.</p>
-              <h5>Email:</h5>
-              <p>kayscrochetus@gmail.com</p>
-          </div>
-          <div class="modal-footer">
+              </div>
+              <div class="modal-body">
+                  <h3>Add to Cart:</h3>
+                  <p>Click item title to go to its details, then add to cart</p>
+                  <h3>Contact Us:</h3>
+                  <p>Click the Instagram and TikTok icons below to contact Us.</p>
+                  <h5>Email:</h5>
+                  <p>kayscrochetus@gmail.com</p>
+              </div>
+              <div class="modal-footer">
             <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
           </div>
         </div>
       </div>
     </div>
+
     {% if user.is_authenticated %}
     <main class="flex-grow-1 py-3">
     {% block content %}{% endblock %}
@@ -71,7 +72,7 @@
         <div class="social-icons mt-2">
            <a href="https://www.instagram.com/your_instagram_username" target="_blank" class="text-dark me-2"><i class="fab fa-instagram fa-2x"></i></a>
             &copy; 2023 Kay's Crochet. All rights reserved.
-            <a href="https://www.snapchat.com/add/your_snapchat_username" target="_blank" class="text-dark"><i class="fab fa-snapchat fa-2x"></i></a>
+            <a href="https://www.tiktok.com/@your_tiktok_username" target="_blank" class="text-dark me-2"><i class="fab fa-tiktok fa-2x"></i></a>
         </div>
     </footer>
 </body>

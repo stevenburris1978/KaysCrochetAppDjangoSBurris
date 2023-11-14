@@ -41,7 +41,7 @@
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
-        <input type="submit" value="Like">
+        <input type="submit" value="Like" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
         <button type="button" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
     </fieldset>
 </form>
