@@ -13,9 +13,22 @@
 {% csrf_token %}
     <fieldset>
         <legend><h1>{{ item.item_title }} Details</h1></legend>
-        {% if item.image %}
-            <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
-        {% endif %}
+            <div style="padding: .5rem">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
+                {% endif %}
+                {% if item.image2 %}
+                    <img src="{{ item.image2.url }}" alt="{{ item.item_title }}">
+                {% endif %}
+            </div>
+            <div style="padding: .5rem">
+                {% if item.image3 %}
+                    <img src="{{ item.image3.url }}" alt="{{ item.item_title }}">
+                {% endif %}
+                {% if item.image4 %}
+                    <img src="{{ item.image4.url }}" alt="{{ item.item_title }}">
+                {% endif %}
+            </div>
         <h4>Description:</h4>
         <p>{{ item.description }}</p>
         <h4>Price:</h4>

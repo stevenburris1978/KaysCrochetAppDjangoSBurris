@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import Choice, Item
 
 
@@ -13,11 +12,11 @@ class ChoiceInline(admin.TabularInline):
 
 class ItemAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {"fields": ["item_title", "description", "image", "price"]}),
+        (None, {"fields": ["item_title", "description", "image", "image2", "image3", "image4", "price"]}),
         ("Date information", {"fields": ["pub_date"]}),
     ]
     inlines = [ChoiceInline]
-    list_display = ["item_title", "description", "image", "price", "pub_date", "was_published_recently"]
+    list_display = ["item_title", "description", "price", "pub_date", "was_published_recently"]
     list_filter = ["pub_date"]
     search_fields = ["item_title"]
 
