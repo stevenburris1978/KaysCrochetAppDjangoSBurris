@@ -1,10 +1,11 @@
 from decimal import Decimal
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 from django.views import generic
 from .forms import SignUpForm, SignInForm, AddToCartForm
 from .models import Choice, Item
@@ -127,6 +128,7 @@ def add_to_cart(request, pk):
     return render(request, 'kayscrochetapp/detail.html', {'item': item, 'form': form})
 
 
+
 def cart(request):
     # Retrieve the cart data from the session
     cart = request.session.get('kayscrochetapp:cart', {})
@@ -145,3 +147,36 @@ def cart(request):
 
     context = {'items': items}
     return render(request, 'kayscrochetapp/cart.html', context)
+
+
+
+@require_POST
+def remove_from_cart(request, item_id):
+    # Retrieve the cart data from the session
+    cart = request.session.get('kayscrochetapp:cart', {})
+
+    # Check if the item is in the cart
+    if str(item_id) in cart:
+        # Get the removed item's total price
+        removed_item_total_price = float(cart[str(item_id)]['total_price'])
+
+        # Remove the item from the cart
+        del cart[str(item_id)]
+
+        # Save the updated cart back to the session
+        request.session['kayscrochetapp:cart'] = cart
+
+        # Print debug information
+        print(f"Item {item_id} removed from the cart")
+
+        return JsonResponse({'removed_item_total_price': removed_item_total_price})
+    else:
+        # If the item is not in the cart, return an error response
+        return JsonResponse({'error': f'Item {item_id} not found in the cart'}, status=400)
+
+
+
+
+
+
+

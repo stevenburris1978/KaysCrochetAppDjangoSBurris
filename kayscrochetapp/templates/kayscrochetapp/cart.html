@@ -5,13 +5,14 @@
 
 {% block content %}
 <button type="button" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
-<form>
+<form method="post" id="removeItemForm">
+    {% csrf_token %}
     <fieldset>
         <legend><h1>Cart</h1></legend>
       {% if items %}
         <ul>
           {% for cart_item in items %}
-            <li>
+           <li id="item_{{ cart_item.item.pk }}">
                 <h3>{{ cart_item.item.item_title }}</h3>
                 {% if cart_item.item.image %}
                     <img src="{{ cart_item.item.image.url }}" alt="{{ item.item_title }}">
@@ -20,12 +21,15 @@
                 Price Each: ${{ cart_item.price|floatformat:2 }}<br>
                 {% if cart_item.total_price %}
                     Total Price: ${{ cart_item.total_price|floatformat:2 }}
+                            <!-- Store the price of the removed item -->
+                    <span id="removedItemPrice" style="display: none;">{{ cart_item.total_price|floatformat:2 }}</span>
                 {% endif %}
+                <button type="button" onclick="removeItem('{{ cart_item.item.pk }}')">Remove</button>
             </li>
           {% endfor %}
         </ul>
         {% if items|sum_attribute:'total_price' %}
-            <h4>Total Cart Price:</h4><p> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
+            <h4>Total Cart Price:</h4><p id="totalCartPrice"p> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
         {% else %}
           <p>Total Cart Price: $0.00</p>
         {% endif %}
@@ -34,4 +38,66 @@
       {% endif %}
     </fieldset>
 </form>
+
+<script>
+async function removeItem(itemId) {
+    try {
+        // Use fetch to submit the form asynchronously
+        const response = await fetch('{% url 'kayscrochetapp:remove_from_cart' item_id=0 %}'.replace('0', itemId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        });
+
+        // Check if the response indicates success (2xx status code)
+        if (response.ok) {
+            console.log('Item removed successfully');
+
+            // Get the removed item's total price from the response
+            const responseData = await response.json();
+            const removedItemTotalPrice = parseFloat(responseData.removed_item_total_price);
+
+            // Update the total cart price
+            updateTotalCartPrice(removedItemTotalPrice);
+
+            // Attempt to remove the item from the DOM after a short delay
+            setTimeout(function() {
+                var itemElement = document.getElementById('item_' + itemId);
+                if (itemElement) {
+                    console.log('Removing item with ID: ' + itemId);
+                    itemElement.remove();
+                } else {
+                    console.log('Item with ID ' + itemId + ' not found in the DOM');
+                }
+            }, 300);  // Adjust the delay as needed
+        } else {
+            console.error('Item removal failed with status:', response.status);
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
+
+function updateTotalCartPrice(removedItemTotalPrice) {
+    // Get the total cart price element
+    var totalCartPriceElement = document.getElementById('totalCartPrice');
+
+    if (totalCartPriceElement) {
+        // Get the current total cart price
+        var currentTotalCartPrice = parseFloat(totalCartPriceElement.innerText.replace('$', '').trim());
+
+        // Subtract the removed item's total price from the current total cart price
+        var newTotalCartPrice = isNaN(currentTotalCartPrice) ? 0 : Math.max(0, currentTotalCartPrice - removedItemTotalPrice);
+
+        // Update the total cart price element
+        totalCartPriceElement.innerText = '$' + newTotalCartPrice.toFixed(2);
+    }
+}
+</script>
+
+
+
 {% endblock %}
+

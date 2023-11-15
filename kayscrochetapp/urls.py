@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import add_to_cart, cart
+from .views import add_to_cart, cart, remove_from_cart
 
 app_name = 'kayscrochetapp'
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
     path('signout', views.signout, name='signout'),
-    path('cart', cart, name='cart'),  # Add this line for the cart view
+    path('cart', cart, name='cart'),
     path('<int:pk>/item/', add_to_cart, name='add_to_cart'),
+    path('<int:item_id>/cart/remove/', remove_from_cart, name='remove_from_cart'),
 ]
