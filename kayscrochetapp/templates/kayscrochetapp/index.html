@@ -10,25 +10,39 @@
                 <li>
                     <form>
                         <fieldset>
-                        <legend><h3><a href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></h3></legend>
-                        <div style="padding: .5rem">
-                            {% if item.image %}
-                                <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
-                            {% endif %}
-                            {% if item.image2 %}
-                                <img src="{{ item.image2.url }}" alt="{{ item.item_title }}">
-                            {% endif %}
-                        </div>
-                        <div style="padding: .5rem">
-                            {% if item.image3 %}
-                                <img src="{{ item.image3.url }}" alt="{{ item.item_title }}">
-                            {% endif %}
-                            {% if item.image4 %}
-                                <img src="{{ item.image4.url }}" alt="{{ item.item_title }}">
-                            {% endif %}
-                        </div>
-                        <h4>Description:</h4>
-                        <p>{{ item.description }}</p>
+                            <legend><h3><a href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></h3></legend>
+                            <div style="padding: .5rem">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
+                                {% endif %}
+                                {% if item.image2 %}
+                                    <img src="{{ item.image2.url }}" alt="{{ item.item_title }}">
+                                {% endif %}
+                            </div>
+                            <div style="padding: .5rem">
+                                {% if item.image3 %}
+                                    <img src="{{ item.image3.url }}" alt="{{ item.item_title }}">
+                                {% endif %}
+                                {% if item.image4 %}
+                                    <img src="{{ item.image4.url }}" alt="{{ item.item_title }}">
+                                {% endif %}
+                            </div>
+                            <h4>Description:</h4>
+                            <p>{{ item.description }}</p>
+                            <div class="d-flex justify-content-left align-items-center">
+                                <div>
+                                   <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark"><i class="fa fa-heart fa-2x" style="color: red;"></i></a>
+                                </div>
+                                <div>
+                                    {% if item.no_of_likes == 0 %}
+                                    <p>'s 0</p>
+                                    {% elif item.no_of_likes == 1 %}
+                                    <p>'s {{item.no_of_likes}} person</p>
+                                    {% else %}
+                                    <p>'s {{item.no_of_likes}} people</p>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </fieldset>
                     </form>
                 </li>

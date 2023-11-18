@@ -15,24 +15,31 @@
 <body class="d-flex flex-column min-vh-100">
     <header class="py-3 sticky-top bg-danger-subtle flex-shrink-0 fixed-top text-center justify-content-center">
         <div class="container-fluid">
-            <h1 style="margin-top: 1rem">Kay's Crochet</h1>
-            {% if user.is_authenticated %}
-                {# Show the user name if the user is authenticated #}
-
-            <div class="d-flex justify-content-center align-items-center">
-                <p class="m-0 me-2">Welcome, {{ user.username }}!</p>
-                <button type="button" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
-                <button type="button" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
+            <div class="d-flex justify-content-center align-items-center me-4">
                 <div class="ms-2">
-                    {# Show the logout button if the user is authenticated #}
-                    {% include 'kayscrochetapp/signout.html' %}
+                    <img class="imgHeader" src="{% static 'kayscrochetapp/images/HaveAGoodDay.png' %}" alt="Have A Good Day!">
                 </div>
-                {% else %}
-                <div class="d-flex justify-content-end">
-                {# Show the login and signup links if the user is not authenticated #}
-                <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
+                <div class="ms-2">
+                    <h1 style="margin-top: 1rem">Kay's Crochet</h1>
+                    {% if user.is_authenticated %}
+                        {# Show the user name if the user is authenticated #}
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p class="m-0 me-2">Welcome, {{ user.username }}!</p>
+                        <button type="button" class="button ms-1" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
+                        <button type="button" class="button ms-1" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
+                        <div class="me-1">
+                            {# Show the logout button if the user is authenticated #}
+                            {% include 'kayscrochetapp/signout.html' %}
+                        </div>
+                        {% else %}
+                        <div class="d-flex justify-content-end">
+                        {# Show the login and signup links if the user is not authenticated #}
+                        <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
-                {% endif %}
             </div>
         </div>
     </header>

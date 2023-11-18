@@ -35,14 +35,32 @@
         <p>${{ item.price }}</p>
         <h4>Published On:</h4>
         <p>{{ item.pub_date }}</p>
-        <h4>Click To Like:</h4>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in item.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-        <input type="submit" value="Like" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
+        {% if item.choice_set.count > 0 %}
+            <h4>Select Styles:</h4>
+            {% for choice in item.choice_set.all %}
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+            {% endfor %}
+        {% endif %}
+        {% if item.choice_set.count > 0 %}
+            <input type="submit" value="SELECT" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
+        {% endif %}
         <button type="button" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
+        <div class="d-flex justify-content-left align-items-center">
+            <div>
+               <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark"><i class="fa fa-heart fa-2x" style="color: red;"></i></a>
+            </div>
+            <div>
+                {% if item.no_of_likes == 0 %}
+                <p>'s 0</p>
+                {% elif item.no_of_likes == 1 %}
+                <p>'s {{item.no_of_likes}} person</p>
+                {% else %}
+                <p>'s {{item.no_of_likes}} people</p>
+                {% endif %}
+            </div>
+        </div>
     </fieldset>
 </form>
 {% endblock %}

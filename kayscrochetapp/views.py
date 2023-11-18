@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from django.views import generic
 from .forms import SignUpForm, SignInForm, AddToCartForm
-from .models import Choice, Item
+from .models import Choice, Item, LikeItem
 
 
 class IndexView(generic.ListView):
@@ -174,6 +174,26 @@ def remove_from_cart(request, item_id):
         # If the item is not in the cart, return an error response
         return JsonResponse({'error': f'Item {item_id} not found in the cart'}, status=400)
 
+
+def like_item(request):
+    username = request.user.username
+    item_id = request.GET.get('item_id')
+
+    item = Item.objects.get(id=item_id)
+
+    like_filter = LikeItem.objects.filter(item_id=item_id, username=username).first()
+
+    if like_filter == None:
+        new_like = LikeItem.objects.create(item_id=item_id, username=username)
+        new_like.save()
+        item.no_of_likes = item.no_of_likes+1
+        item.save()
+        return redirect('/')
+    else:
+        like_filter.delete()
+        item.no_of_likes = item.no_of_likes-1
+        item.save()
+        return redirect('/')
 
 
 

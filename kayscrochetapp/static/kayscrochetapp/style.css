@@ -1,5 +1,5 @@
 li a {
-    color: green;
+    color: darkblue;
 }
 
 body {
@@ -62,5 +62,12 @@ input {
     align-items: center;
     justify-content: center;
     background-color: lavenderblush;
+}
+
+.imgHeader {
+    margin: 1rem;
+    height: 5rem;
+    width: 5rem;
+    border-radius: 2.5rem;
 }
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Choice, Item
+from .models import Choice, Item, LikeItem
 
 
 admin.site.site_header = "Kay's Crochet Administration"
@@ -23,3 +23,4 @@ class ItemAdmin(admin.ModelAdmin):
 
 admin.site.register(Choice)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(LikeItem)

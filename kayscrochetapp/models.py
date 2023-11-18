@@ -14,6 +14,7 @@ class Item(models.Model):
     image4 = models.ImageField(upload_to='items/images/', blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     pub_date = models.DateTimeField("date published")
+    no_of_likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.item_title
@@ -34,3 +35,11 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+class LikeItem(models.Model):
+    item_id = models.CharField(max_length=500)
+    username = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.username
