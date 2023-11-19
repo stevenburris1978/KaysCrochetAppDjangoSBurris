@@ -26,8 +26,8 @@
 
                     <div class="d-flex justify-content-center align-items-center">
                         <p class="m-0 me-2">Welcome, {{ user.username }}!</p>
-                        <button type="button" class="button ms-1" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
-                        <button type="button" class="button ms-1" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
+                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
+                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
                         <div class="me-1">
                             {# Show the logout button if the user is authenticated #}
                             {% include 'kayscrochetapp/signout.html' %}
@@ -57,7 +57,7 @@
               </div>
               <div class="modal-body">
                   <h3>Add to Cart:</h3>
-                  <p>Click item title to go to its details, then add to cart</p>
+                  <p>Click the item title at HOME to edit its details, then add to cart.</p>
                   <h3>Contact Us:</h3>
                   <p>Click the Instagram and TikTok icons below to contact Us.</p>
                   <h5>Email:</h5>

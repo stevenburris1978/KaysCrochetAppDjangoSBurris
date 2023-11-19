@@ -7,7 +7,7 @@
 <form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Add to Cart</button>
+    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">Add to Cart</button>
 </form>
 <form action="{% url 'kayscrochetapp:like' item.id %}" method="post">
 {% csrf_token %}
@@ -44,9 +44,10 @@
             {% endfor %}
         {% endif %}
         {% if item.choice_set.count > 0 %}
-            <input type="submit" value="SELECT" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
+            <input type="submit" value="ADD STYLES" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
+            <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">SEE STYLES</button>
         {% endif %}
-        <button type="button" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">See Likes</button>
+
         <div class="d-flex justify-content-left align-items-center">
             <div>
                <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark"><i class="fa fa-heart fa-2x" style="color: red;"></i></a>
@@ -62,6 +63,11 @@
             </div>
         </div>
     </fieldset>
+</form>
+<form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">Add to Cart</button>
 </form>
 {% endblock %}
 {% endif %}

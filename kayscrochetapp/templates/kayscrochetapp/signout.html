@@ -7,7 +7,7 @@
 <body>
 <form method="post" action="{% url 'kayscrochetapp:signin' %}">
     {% csrf_token %}
-    <button type="submit">SIGNOUT</button>
+    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">SIGNOUT</button>
 </form>
 </body>
 </html>

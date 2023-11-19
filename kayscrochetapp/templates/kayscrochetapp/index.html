@@ -10,7 +10,7 @@
                 <li>
                     <form>
                         <fieldset>
-                            <legend><h3><a href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></h3></legend>
+                            <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
                             <div style="padding: .5rem">
                                 {% if item.image %}
                                     <img src="{{ item.image.url }}" alt="{{ item.item_title }}">

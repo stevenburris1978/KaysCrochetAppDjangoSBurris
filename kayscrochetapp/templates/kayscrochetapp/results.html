@@ -7,17 +7,16 @@
 
 <form>
     <fieldset>
-        <legend><h1>{{ item.item_title }}Likes</h1></legend>
+        <legend><h1>{{ item.item_title }} Styles</h1></legend>
         {% if item.image %}
             <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
         {% endif %}
-        <h4>Likes:</h4>
         <ul>
         {% for choice in item.choice_set.all %}
-            <li>{{ choice.choice_text }} -- {{ choice.likes }} like{{ choice.likes|pluralize }}</li>
+            <li>{{ choice.choice_text }} -- {{ choice.likes }} Selected</li>
         {% endfor %}
         </ul>
-        <button type="button" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:detail' item.id%}'">Like Again</button>
+        <button type="button" class="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:detail' item.id%}'">ITEM DETAILS</button>
     </fieldset>
 </form>
 

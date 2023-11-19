@@ -4,7 +4,7 @@
 {% block title %}Cart{% endblock %}
 
 {% block content %}
-<button type="button" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
+<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
 <form method="post" id="removeItemForm">
     {% csrf_token %}
     <fieldset>
@@ -24,7 +24,14 @@
                             <!-- Store the price of the removed item -->
                     <span id="removedItemPrice" style="display: none;">{{ cart_item.total_price|floatformat:2 }}</span>
                 {% endif %}
-                <button type="button" onclick="removeItem('{{ cart_item.item.pk }}')">Remove</button>
+               <div class="d-flex justify-content-left align-items-center">
+                   <div>
+                        <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a href="{% url 'kayscrochetapp:detail' cart_item.item.id %}" style="text-decoration: none; color: black;">EDIT</a></button>
+                   </div>
+                   <div>
+                        <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="removeItem('{{ cart_item.item.pk }}')">REMOVE</button>
+                   </div>
+               </div>
             </li>
           {% endfor %}
         </ul>
@@ -38,6 +45,7 @@
       {% endif %}
     </fieldset>
 </form>
+<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
 
 <script>
 async function removeItem(itemId) {
