@@ -17,6 +17,11 @@ nav {
 h2 {
     padding: .5rem;
     margin-left: 3rem;
+    text-transform: uppercase;
+}
+
+h2 {
+    text-transform: uppercase;
 }
 
 input {

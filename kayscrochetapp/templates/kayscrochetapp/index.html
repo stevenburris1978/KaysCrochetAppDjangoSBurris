@@ -3,7 +3,7 @@
 {% block title %}Kay's Crochet{% endblock %}
 
 {% block content %}
-    <h2>All Items For Sale:</h2>
+    <h2 style="text-transform: uppercase;">All Items For Sale:</h2>
 
         <!-- Search form -->
     <input style="padding: .5rem; margin-left: 3rem; height: 1.5rem" type="text" id="search" placeholder="Search by item title">
@@ -14,7 +14,7 @@
             <li>
                 <form>
                     <fieldset>
-                        <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
+                        <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none; text-transform: uppercase;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
                         <div style="padding: .5rem">
                             {% if item.image %}
                                 <img src="{{ item.image.url }}" alt="{{ item.item_title }}">

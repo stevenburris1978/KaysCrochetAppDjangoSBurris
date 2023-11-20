@@ -8,12 +8,12 @@
 <form method="post" id="removeItemForm">
     {% csrf_token %}
     <fieldset>
-        <legend><h1>Cart</h1></legend>
+        <legend><h1 style="text-transform: uppercase;">Cart</h1></legend>
       {% if items %}
         <ul>
           {% for cart_item in items %}
            <li id="item_{{ cart_item.item.pk }}">
-                <h3>{{ cart_item.item.item_title }}</h3>
+                <h4 style="text-transform: uppercase;">{{ cart_item.item.item_title }}</h4>
                 {% if cart_item.item.image %}
                     <img src="{{ cart_item.item.image.url }}" alt="{{ item.item_title }}">
                 {% endif %}<br>
@@ -36,7 +36,7 @@
           {% endfor %}
         </ul>
         {% if items|sum_attribute:'total_price' %}
-            <h4>Total Cart Price:</h4><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
+            <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
         {% else %}
           <p>Total Cart Price: $0.00</p>
         {% endif %}
