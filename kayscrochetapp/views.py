@@ -188,12 +188,12 @@ def like_item(request):
         new_like.save()
         item.no_of_likes = item.no_of_likes+1
         item.save()
-        return redirect('/')
+        return redirect('kayscrochetapp:index')
     else:
         like_filter.delete()
         item.no_of_likes = item.no_of_likes-1
         item.save()
-        return redirect('/')
+        return redirect('kayscrochetapp:index')
 
 
 

@@ -16,7 +16,14 @@
             <li>{{ choice.choice_text }} -- {{ choice.likes }} Selected</li>
         {% endfor %}
         </ul>
-        <button type="button" class="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:detail' item.id%}'">ITEM DETAILS</button>
+        <div class="d-flex justify-content-left align-items-center">
+            <div>
+            <label>Go Back:</label>
+            </div>
+            <div>
+            <button type="button" class="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:detail' item.id%}'">ITEM DETAILS</button>
+            </div>
+        </div>
     </fieldset>
 </form>
 
