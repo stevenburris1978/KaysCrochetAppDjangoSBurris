@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -16,7 +17,6 @@ class IndexView(generic.ListView):
     context_object_name = "latest_item_list"
 
     def get_queryset(self):
-        """Return the last five published questions."""
         return Item.objects.order_by("-pub_date")[:100]
 
     @method_decorator(login_required(login_url='kayscrochetapp:signin'))
@@ -194,9 +194,3 @@ def like_item(request):
         item.no_of_likes = item.no_of_likes-1
         item.save()
         return redirect('kayscrochetapp:index')
-
-
-
-
-
-

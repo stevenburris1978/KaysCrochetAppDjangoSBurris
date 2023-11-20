@@ -36,7 +36,7 @@
           {% endfor %}
         </ul>
         {% if items|sum_attribute:'total_price' %}
-            <h4>Total Cart Price:</h4><p id="totalCartPrice"p> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
+            <h4>Total Cart Price:</h4><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
         {% else %}
           <p>Total Cart Price: $0.00</p>
         {% endif %}
@@ -104,8 +104,6 @@ function updateTotalCartPrice(removedItemTotalPrice) {
     }
 }
 </script>
-
-
 
 {% endblock %}
 

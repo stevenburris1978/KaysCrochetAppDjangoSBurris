@@ -4,53 +4,81 @@
 
 {% block content %}
     <h2>All Items For Sale:</h2>
-        {% if latest_item_list %}
-            <ul>
-            {% for item in latest_item_list %}
-                <li>
-                    <form>
-                        <fieldset>
-                            <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
-                            <div style="padding: .5rem">
-                                {% if item.image %}
-                                    <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
-                                {% endif %}
-                                {% if item.image2 %}
-                                    <img src="{{ item.image2.url }}" alt="{{ item.item_title }}">
+
+        <!-- Search form -->
+    <input style="padding: .5rem; margin-left: 3rem; height: 1.5rem" type="text" id="search" placeholder="Search by item title">
+
+    {% if latest_item_list %}
+        <ul>
+        {% for item in latest_item_list %}
+            <li>
+                <form>
+                    <fieldset>
+                        <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
+                        <div style="padding: .5rem">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
+                            {% endif %}
+                            {% if item.image2 %}
+                                <img src="{{ item.image2.url }}" alt="{{ item.item_title }}">
+                            {% endif %}
+                        </div>
+                        <div style="padding: .5rem">
+                            {% if item.image3 %}
+                                <img src="{{ item.image3.url }}" alt="{{ item.item_title }}">
+                            {% endif %}
+                            {% if item.image4 %}
+                                <img src="{{ item.image4.url }}" alt="{{ item.item_title }}">
+                            {% endif %}
+                        </div>
+                        <h4>Description:</h4>
+                        <p>{{ item.description }}</p>
+                        <div class="d-flex justify-content-left align-items-center">
+                            <div>
+                               <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark"><i class="fa fa-heart fa-2x" style="color: red;"></i></a>
+                            </div>
+                            <div>
+                                {% if item.no_of_likes == 0 %}
+                                <p>'s 0</p>
+                                {% elif item.no_of_likes == 1 %}
+                                <p>'s {{item.no_of_likes}}</p>
+                                {% else %}
+                                <p>'s {{item.no_of_likes}}</p>
                                 {% endif %}
                             </div>
-                            <div style="padding: .5rem">
-                                {% if item.image3 %}
-                                    <img src="{{ item.image3.url }}" alt="{{ item.item_title }}">
-                                {% endif %}
-                                {% if item.image4 %}
-                                    <img src="{{ item.image4.url }}" alt="{{ item.item_title }}">
-                                {% endif %}
-                            </div>
-                            <h4>Description:</h4>
-                            <p>{{ item.description }}</p>
-                            <div class="d-flex justify-content-left align-items-center">
-                                <div>
-                                   <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark"><i class="fa fa-heart fa-2x" style="color: red;"></i></a>
-                                </div>
-                                <div>
-                                    {% if item.no_of_likes == 0 %}
-                                    <p>'s 0</p>
-                                    {% elif item.no_of_likes == 1 %}
-                                    <p>'s {{item.no_of_likes}}</p>
-                                    {% else %}
-                                    <p>'s {{item.no_of_likes}}</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                </li>
-            {% endfor %}
-            </ul>
-{% else %}
-    <p>No items are available.</p>
-{% endif %}
+                        </div>
+                    </fieldset>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Add an event listener to the search input field
+        $('#search').on('input', function () {
+            // Get the search query from the input field
+            var searchQuery = $(this).val().toLowerCase();
+
+            // Iterate through each item in the list
+            $('ul li').each(function () {
+                // Get the item title from the list item
+                var itemTitle = $(this).find('h3 a').text().toLowerCase();
+
+                // Show or hide the item based on the search query
+                if (itemTitle.includes(searchQuery)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}
 
