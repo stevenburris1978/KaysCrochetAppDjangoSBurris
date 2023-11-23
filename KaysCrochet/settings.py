@@ -22,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zwg6_ah!9#*%oaynsktj@0j*c-xf*vk5fp9e@i4)n-$4uv*pji'
+SECRET_KEY = ('django-insecure-zwg6_ah!9#*%oaynsktj@0j*c-xf*vk5fp9e@i4)n-$4uv*pji', 'DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['kayscrochet.us', 'www.kayscrochet.us', 'kayscrochet.us:443', 'www.kayscrochet.us:443']
 
 
 # Application definition
@@ -114,7 +114,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
@@ -136,5 +136,6 @@ STRIPE_WEBHOOK_SECRET = "whsec_8b06fdfe2b2255f11d3d38a01b2ba7d84cadacc485e482b74
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+SECURE_SSL_REDIRECT = True
 
 
