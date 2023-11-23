@@ -4,6 +4,8 @@
 # *Final Project SBurris*
 # *Kay's Crochet App*
 
+# Github commits to Main Branch instead of Master at: 
+[Gituhb](https://github.com/stevenburris1978/KaysCrochetAppDjangoSBurris/tree/main)
 # *Description*
 ### With this app, admin can add an item that has title input, description input, image input, price and set choices for example, Like unlike, to vote on in each post
 ### Users can log in and see the items, vote on the choices, and buy the items

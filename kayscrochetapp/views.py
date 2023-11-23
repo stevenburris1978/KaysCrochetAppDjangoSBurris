@@ -1,15 +1,22 @@
 from decimal import Decimal
+
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
+from django.views.generic import TemplateView
+
 from .forms import SignUpForm, SignInForm, AddToCartForm
 from .models import Choice, Item, LikeItem
+import stripe
+import logging
 
 
 class IndexView(generic.ListView):
@@ -102,26 +109,32 @@ def add_to_cart(request, pk):
 
     if request.method == 'POST':
         form = AddToCartForm(request.POST)
-        if form.is_valid():
-            quantity = form.cleaned_data['quantity']
+        try:
+            if form.is_valid():
+                quantity = form.cleaned_data['quantity']
 
-            # Retrieve or initialize the cart dictionary from the session
-            cart = request.session.get('kayscrochetapp:cart', {})
+                # Retrieve or initialize the cart dictionary from the session
+                cart = request.session.get('kayscrochetapp:cart', {})
 
-            # Check if the item is already in the cart
-            if item.pk in cart:
-                # Update the quantity for the existing item
-                cart[item.pk]['quantity'] += quantity
-                # Update the total_price for the existing item
-                cart[item.pk]['total_price'] = str(Decimal(cart[item.pk]['price']) * Decimal(cart[item.pk]['quantity']))
-            else:
-                # Add a new entry for the item in the cart
-                cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)),}
+                # Check if the item is already in the cart
+                if item.pk in cart:
+                    # Update the quantity for the existing item
+                    cart[item.pk]['quantity'] += quantity
+                    # Update the total_price for the existing item
+                    cart[item.pk]['total_price'] = str(Decimal(cart[item.pk]['price']) * Decimal(cart[item.pk]['quantity']))
+                else:
+                    # Add a new entry for the item in the cart
+                    cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)),}
 
-            # Save the updated cart back to the session
-            request.session['kayscrochetapp:cart'] = cart
+                # Save the updated cart back to the session
+                request.session['kayscrochetapp:cart'] = cart
 
-            return redirect('kayscrochetapp:cart')  # Redirect to the cart page after adding the item
+                messages.success(request, f"{quantity} {item.item_title}(s) added to your cart.")
+                return redirect('kayscrochetapp:cart')  # Redirect to the cart page after adding the item
+        except Exception as e:
+            # Handle the exception here, e.g., log the error
+            print(f"Error adding item to cart: {e}")
+            messages.error(request, 'An error occurred while processing your request.')
     else:
         form = AddToCartForm()
 
@@ -145,7 +158,7 @@ def cart(request):
 
         items.append({'item': item, 'quantity': quantity, 'price': price, 'total_price': total_price})
 
-    context = {'items': items}
+    context = {'items': items,'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY}
     return render(request, 'kayscrochetapp/cart.html', context)
 
 
@@ -194,3 +207,76 @@ def like_item(request):
         item.no_of_likes = item.no_of_likes-1
         item.save()
         return redirect('kayscrochetapp:index')
+
+class SuccessView(TemplateView):
+    template_name = "kayscrochetapp/payment_success.html"
+
+
+class CancelView(TemplateView):
+    template_name = "kayscrochetapp/payment_canceled.html"
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+# Define a list of allowed IP addresses or domains
+ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000']
+
+# Define the logger
+logger = logging.getLogger(__name__)
+
+
+@csrf_exempt
+@require_POST
+def create_payment_intent(request):
+    try:
+        # Verify that the request is coming from an allowed IP address or domain
+        client_address = request.META.get('REMOTE_ADDR')
+        client_host = request.META.get('HTTP_HOST')
+        if client_address not in ALLOWED_ADDRESSES and client_host not in ALLOWED_ADDRESSES:
+            raise PermissionError("Unauthorized access")
+
+        # Extract the amount from the request, adjust this based on your needs
+        amount = int(request.POST.get('amount', 0))
+
+        # Validate required fields
+        if not amount:
+            raise ValueError("Amount is required")
+
+        # Perform additional authentication checks here if needed
+
+        # Create a PaymentIntent
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency='usd',
+            payment_method_types=['card'],  # Adjust based on your needs
+        )
+
+        return JsonResponse({'clientSecret': intent.client_secret})
+
+    except PermissionError as pe:
+        logger.error(f"PermissionError: {pe}")
+        return JsonResponse({'error': 'Permission denied'}, status=403)
+
+    except stripe.error.CardError as ce:
+        logger.error(f"CardError: {ce.error.message}")
+        return JsonResponse({'error': f'Card error: {ce.error.message}'}, status=400)
+
+    except stripe.error.RateLimitError as rle:
+        logger.error(f"RateLimitError: {str(rle)}")
+        return JsonResponse({'error': f'Rate limit error: {str(rle)}'}, status=429)
+
+    except stripe.error.InvalidRequestError as ire:
+        logger.error(f"InvalidRequestError: {str(ire)}")
+        return JsonResponse({'error': f'Invalid request error: {str(ire)}'}, status=400)
+
+    except stripe.error.AuthenticationError as ae:
+        logger.error(f"AuthenticationError: {str(ae)}")
+        return JsonResponse({'error': f'Authentication error: {str(ae)}'}, status=401)
+
+    except stripe.error.StripeError as se:
+        logger.error(f"StripeError: {str(se)}")
+        return JsonResponse({'error': f'Stripe error: {str(se)}'}, status=500)
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return JsonResponse({'error': f'An unexpected error occurred: {str(e)}'}, status=500)

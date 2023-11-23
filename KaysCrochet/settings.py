@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -75,12 +76,8 @@ WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 
 # Password validation
@@ -130,3 +127,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'auth.User'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
+
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_live_51OEipnKqwOVEoFpANoDETgXJLZgQsOhk6gMil8iAyHBjAq2YnCmQ7l43dEzhywO5cQLhOMgLnynHwRPqv6dY9v1L00LmGhjCnW')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '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')
+
+STRIPE_WEBHOOK_SECRET = "whsec_8b06fdfe2b2255f11d3d38a01b2ba7d84cadacc485e482b747241c739843ff64"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+

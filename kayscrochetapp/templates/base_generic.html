@@ -2,40 +2,45 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <!-- for different devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Kay's Crochet{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'kayscrochetapp/style.css' %}">
     {% block styles %}{% endblock %}
 </head>
+
 <body class="d-flex flex-column min-vh-100">
+    <!-- Header Section -->
     <header class="py-3 sticky-top bg-danger-subtle flex-shrink-0 fixed-top text-center justify-content-center">
+        <!-- Header Content -->
         <div class="container-fluid">
             <div class="d-flex justify-content-center align-items-center me-4">
+                <!-- Logo -->
                 <div class="ms-2">
                     <img class="imgHeader" src="{% static 'kayscrochetapp/images/HaveAGoodDay.png' %}" alt="Have A Good Day!">
                 </div>
+                <!-- Site Title and User Info -->
                 <div class="ms-2">
                     <h1 style="margin-top: 1rem">Kay's Crochet</h1>
                     {% if user.is_authenticated %}
-                        {# Show the user name if the user is authenticated #}
-
+                    <!-- User is authenticated -->
                     <div class="d-flex justify-content-center align-items-center">
                         <p class="m-0 me-2">Welcome, {{ user.username }}!</p>
+                        <!-- Navigation Buttons -->
                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
                         <div class="me-1">
-                            {# Show the logout button if the user is authenticated #}
                             {% include 'kayscrochetapp/signout.html' %}
                         </div>
                         {% else %}
+                        <!-- User is not authenticated -->
                         <div class="d-flex justify-content-end">
-                        {# Show the login and signup links if the user is not authenticated #}
-                        <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
+                            <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
                         </div>
                         {% endif %}
                     </div>
@@ -43,48 +48,61 @@
             </div>
         </div>
     </header>
-                        <!-- Button trigger modal -->
-    <button type="button" class="button text-light bg-danger-subtle fixed-top" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 3rem; margin-left: 47.5%;">
-      HELP
+
+    <!-- Help Modal Button -->
+    <button type="button" class="button text-light bg-danger-subtle fixed-top" data-bs-toggle="modal"
+        data-bs-target="#exampleModal" style="width: 3rem; margin-left: 47.5%;">
+        HELP
     </button>
-    <!-- Modal -->
+
+    <!-- Help Modal -->
     <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">HELP</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <h3>Add to Cart:</h3>
-                  <p>Click the item title at HOME to see its details, then add to cart.</p>
-                  <h3>Contact Us:</h3>
-                  <p>Click the Instagram and TikTok icons below to contact Us.</p>
-                  <h5>Email:</h5>
-                  <p>kayscrochetus@gmail.com</p>
-              </div>
-              <div class="modal-footer">
-            <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
-          </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">HELP</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Help Content -->
+                    <h3>Add to Cart:</h3>
+                    <p>Click the item title at HOME to see its details, then add to cart.</p>
+                    <h3>Contact Us:</h3>
+                    <p>Click the Instagram and TikTok icons below to contact Kay's Crochet.</p>
+                    <h5>Email:</h5>
+                    <p>kayscrochetus@gmail.com</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
+    <!-- Main Content Section -->
     {% if user.is_authenticated %}
     <main class="flex-grow-1 py-3">
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </main>
     {% endif %}
+
+    <!-- Footer Section -->
     <footer class="py-3 sticky-bottom bg-danger-subtle text-center justify-content-center">
         <div class="social-icons mt-2">
-           <a href="https://www.instagram.com/kayss.crochet" target="_blank" class="text-dark me-2"><i class="fab fa-instagram fa-2x"></i></a>
+            <!-- Social Media Icons -->
+            <a href="https://www.instagram.com/kayss.crochet" target="_blank" class="text-dark me-2"><i
+                    class="fab fa-instagram fa-2x"></i></a>
             &copy; 2023 Kay's Crochet. All rights reserved.
-            <a href="https://www.tiktok.com/@kaysscrochet" target="_blank" class="text-dark me-2"><i class="fab fa-tiktok fa-2x"></i></a>
+            <a href="https://www.tiktok.com/@kaysscrochet" target="_blank" class="text-dark me-2"><i
+                    class="fab fa-tiktok fa-2x"></i></a>
         </div>
     </footer>
+
 </body>
+
 </html>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 {% block scripts %}{% endblock %}
-

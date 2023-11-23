@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import add_to_cart, cart, remove_from_cart, like_item
+from .views import add_to_cart, cart, remove_from_cart, like_item, SuccessView, CancelView
 
 app_name = 'kayscrochetapp'
 urlpatterns = [
@@ -15,4 +15,8 @@ urlpatterns = [
     path('<int:pk>/item/', add_to_cart, name='add_to_cart'),
     path('<int:item_id>/cart/remove/', remove_from_cart, name='remove_from_cart'),
     path('like_item', like_item, name='like_item'),
+    path('cancel', CancelView.as_view(), name='cancel'),
+    path('success', SuccessView.as_view(), name='success'),
+    path('create_payment_intent/', views.create_payment_intent, name='create_payment_intent'),
+
 ]

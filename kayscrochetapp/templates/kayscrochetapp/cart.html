@@ -37,6 +37,12 @@
         </ul>
         {% if items|sum_attribute:'total_price' %}
             <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
+        <!-- Add Stripe Payment Form -->
+        <form id="stripe-form">
+            <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
+            <div id="card-element"></div>
+            <button id="submit-button" type="button">Pay Now</button>
+        </form>
         {% else %}
           <p>Total Cart Price: $0.00</p>
         {% endif %}
@@ -46,8 +52,41 @@
     </fieldset>
 </form>
 <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
-
+<!-- Add this script to HTML to define a JavaScript variable with the Stripe publishable key -->
 <script>
+  var stripePublishableKey = '{{ STRIPE_PUBLIC_KEY }}';
+  console.log('Stripe Publishable Key:', stripePublishableKey);
+</script>
+
+<!-- Include Stripe.js script -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+async function createPaymentIntent(amount) {
+    try {
+        const response = await fetch('{% url 'kayscrochetapp:create_payment_intent' %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: new URLSearchParams({
+                amount: amount,
+            }),
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            return responseData.clientSecret;
+        } else {
+            console.error('Failed to create PaymentIntent');
+            return null;
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        return null;
+    }
+}
+
 async function removeItem(itemId) {
     try {
         // Use fetch to submit the form asynchronously
@@ -88,22 +127,75 @@ async function removeItem(itemId) {
     }
 }
 
-function updateTotalCartPrice(removedItemTotalPrice) {
-    // Get the total cart price element
-    var totalCartPriceElement = document.getElementById('totalCartPrice');
+async function updateTotalCartPrice(removedItemTotalPrice) {
+    try {
+        // Get the total cart price element
+        var totalCartPriceElement = document.getElementById('totalCartPrice');
 
-    if (totalCartPriceElement) {
-        // Get the current total cart price
-        var currentTotalCartPrice = parseFloat(totalCartPriceElement.innerText.replace('$', '').trim());
+        if (totalCartPriceElement) {
+            // Get the current total cart price
+            var currentTotalCartPrice = parseFloat(totalCartPriceElement.innerText.replace('$', '').trim());
 
-        // Subtract the removed item's total price from the current total cart price
-        var newTotalCartPrice = isNaN(currentTotalCartPrice) ? 0 : Math.max(0, currentTotalCartPrice - removedItemTotalPrice);
+            // Subtract the removed item's total price from the current total cart price
+            var newTotalCartPrice = isNaN(currentTotalCartPrice) ? 0 : Math.max(0, currentTotalCartPrice - removedItemTotalPrice);
 
-        // Update the total cart price element
-        totalCartPriceElement.innerText = '$' + newTotalCartPrice.toFixed(2);
+            // Update the total cart price element
+            totalCartPriceElement.innerText = '$' + newTotalCartPrice.toFixed(2);
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
     }
 }
 </script>
+<script>
+var stripePublishableKey = '{{ STRIPE_PUBLIC_KEY }}';
+
+// Initialize Stripe.js
+var stripe = Stripe(stripePublishableKey);
+var elements = stripe.elements();
+
+// Create an instance of the card Element
+var card = elements.create('card');
+
+// Add an instance of the card Element into the `card-element` div
+card.mount('#card-element');
+
+document.getElementById('submit-button').addEventListener('click', async function() {
+    try {
+              // Calculate the total amount
+        const totalAmount = parseInt('{{ items|sum_attribute:'total_price'|floatformat:2 }}', 10);
+
+        // Create PaymentIntent
+        const clientSecret = await createPaymentIntent(totalAmount);
+
+        if (!clientSecret) {
+            console.error('Failed to retrieve PaymentIntent client secret');
+            return;
+        }
+
+        const { paymentIntent, error } = await stripe.confirmCardPayment(
+            clientSecret,
+            {
+                payment_method: {
+                    card: card,
+                },
+            }
+        );
+
+        if (error) {
+            // Show error to your customer
+            console.error(error.message);
+        } else {
+            // The payment succeeded
+            if (paymentIntent.status === 'succeeded') {
+                // Redirect to success page
+                window.location.href = '{% url 'kayscrochetapp:success' %}';
+            }
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+});
+</script>
 
 {% endblock %}
-
