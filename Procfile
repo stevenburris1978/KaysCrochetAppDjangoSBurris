@@ -1,1 +1,1 @@
-web: gunicorn kayscrochetapp.wsgi
+web: gunicorn KaysCrochet.wsgi
