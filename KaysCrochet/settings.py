@@ -36,7 +36,7 @@ if not IS_HEROKU_APP:
     DEBUG = True
 
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["*", "kayscrochet.us", "www.kayscrochet.us"]
 else:
     ALLOWED_HOSTS = []
 
