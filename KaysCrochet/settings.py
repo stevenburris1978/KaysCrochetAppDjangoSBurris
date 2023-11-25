@@ -134,7 +134,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'auth.User'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'extra_static_files')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
 
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_live_51OEipnKqwOVEoFpANoDETgXJLZgQsOhk6gMil8iAyHBjAq2YnCmQ7l43dEzhywO5cQLhOMgLnynHwRPqv6dY9v1L00LmGhjCnW')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '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')
