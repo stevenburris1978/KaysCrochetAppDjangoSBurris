@@ -33,10 +33,11 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+if not IS_HEROKU_APP:
+    DEBUG = True
 
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*", "kayscrochet.us", "www.kayscrochet.us"]
+    ALLOWED_HOSTS = ["*", "kayscrochet.us", "www.kayscrochet.us", "localhost", "127.0.0.1"]
 else:
     ALLOWED_HOSTS = []
 
@@ -108,7 +109,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 
@@ -147,7 +148,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
