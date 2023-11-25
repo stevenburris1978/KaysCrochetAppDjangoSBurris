@@ -78,7 +78,13 @@ WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,  # set the maximum database connection age to 600 seconds
+        ssl_require=True    # Use SSL to connect to the database
+    )
+}
 
 
 # Password validation
