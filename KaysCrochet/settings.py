@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'DJANGO_SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['kayscrochet.us', 'www.kayscrochet.us', 'kayscrochet.us:443', 'www.kayscrochet.us:443',
                  'kayscrochetapp-e13180bf49a3.herokuapp.com']
