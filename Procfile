@@ -1,1 +1,1 @@
-web: gunicorn KaysCrochet.wsgi
+web: gunicorn KaysCrochet.wsgi --preload
