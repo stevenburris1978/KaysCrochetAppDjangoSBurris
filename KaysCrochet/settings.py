@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,9 +37,9 @@ if not IS_HEROKU_APP:
     DEBUG = True
 
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*", "kayscrochet.us", "www.kayscrochet.us", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["kayscrochet.us", "www.kayscrochet.us", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -107,12 +107,15 @@ else:
     # When running locally in development or in CI, a sqlite database file will be used instead
     # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'kayscrochetapp',
+            'USER': 'postgres',
+            'PASSWORD': 'Password1018!',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
