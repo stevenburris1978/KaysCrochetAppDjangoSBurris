@@ -33,13 +33,13 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-zwg6_ah!9#*%oa
 ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
 # Set DEBUG and ALLOWED_HOSTS based on whether the app is on Heroku
-DEBUG = not ON_HEROKU  # DEBUG is True if not on Heroku, False if on Heroku
+DEBUG = True
 
 if ON_HEROKU:
     # If on Heroku, use a specific domain or IP address for ALLOWED_HOSTS
     ALLOWED_HOSTS = ['*']
 else:
-    # If not on Heroku, use the wildcard '*' for ALLOWED_HOSTS
+    # If not on Heroku, use '' for ALLOWED_HOSTS
     ALLOWED_HOSTS = []
 
 # Application definition
