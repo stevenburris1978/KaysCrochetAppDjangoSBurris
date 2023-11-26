@@ -37,7 +37,7 @@ DEBUG = True
 
 if ON_HEROKU:
     # If on Heroku, use a specific domain or IP address for ALLOWED_HOSTS
-    ALLOWED_HOSTS = ['https://kayscrochetapp-e13180bf49a3.herokuapp.com/']
+    ALLOWED_HOSTS = ['*']
 else:
     # If not on Heroku, use '' for ALLOWED_HOSTS
     ALLOWED_HOSTS = []
