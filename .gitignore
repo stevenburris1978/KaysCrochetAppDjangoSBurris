@@ -162,3 +162,5 @@ cython_debug/
 /kayscrochetapp/migrations/0001_initial.py
 
 /media/kaysitems/images
+
+staticfiles_local/

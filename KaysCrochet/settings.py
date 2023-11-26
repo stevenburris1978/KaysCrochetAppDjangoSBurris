@@ -9,14 +9,15 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import secrets
-import dj_database_url
 import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -24,23 +25,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    default=secrets.token_urlsafe(nbytes=64),
-)
-
-IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-zwg6_ah!9#*%oaynsktj@0j*c-xf*vk5fp9e@i4)n-$4uv*pji')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-if not IS_HEROKU_APP:
-    DEBUG = False
+# Determine if the application is running on Heroku
+ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
-if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*"]
+# Set DEBUG and ALLOWED_HOSTS based on whether the app is on Heroku
+DEBUG = not ON_HEROKU  # DEBUG is True if not on Heroku, False if on Heroku
+
+if ON_HEROKU:
+    # If on Heroku, use a specific domain or IP address for ALLOWED_HOSTS
+    ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = ["kayscrochet.us", "www.kayscrochet.us", "localhost", "127.0.0.1"]
-
+    # If not on Heroku, use the wildcard '*' for ALLOWED_HOSTS
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "whitenoise.runserver_nostatic",
 ]
 
 MIDDLEWARE = [
@@ -60,10 +59,10 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'KaysCrochet.urls'
@@ -71,7 +70,8 @@ ROOT_URLCONF = 'KaysCrochet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates']
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,33 +89,21 @@ WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# Determine if the application is running on Heroku
+ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
-if IS_HEROKU_APP:
-    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-    # automatically by Heroku when a database addon is attached to your Heroku app. See:
-    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
-    # https://github.com/jazzband/dj-database-url
-    DATABASES = {
-        "default": dj_database_url.config(
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        ),
-    }
+if ON_HEROKU:
+    # Use the Heroku database configuration
+    DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 else:
-    # When running locally in development or in CI, a sqlite database file will be used instead
-    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
+    # Use the local SQLite database configuration
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'kayscrochetapp',
-            'USER': 'postgres',
-            'PASSWORD': 'Password1018!',
-            'HOST': 'localhost',
-            'PORT': '5432',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -152,7 +140,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Static files (CSS, JavaScript, images)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -164,23 +154,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'auth.User'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
+# Determine if the application is running on Heroku
+ON_HEROKU = os.environ.get('ON_HEROKU', None)
+
+if ON_HEROKU:
+    # Use the production static files directory
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+else:
+    # Use the local static files directory
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_local')
 
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_live_51OEipnKqwOVEoFpANoDETgXJLZgQsOhk6gMil8iAyHBjAq2YnCmQ7l43dEzhywO5cQLhOMgLnynHwRPqv6dY9v1L00LmGhjCnW')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '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')
 
 STRIPE_WEBHOOK_SECRET = "whsec_8b06fdfe2b2255f11d3d38a01b2ba7d84cadacc485e482b747241c739843ff64"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-SECURE_SSL_REDIRECT = True
-
-STORAGES = {
-    # Enable WhiteNoise's GZip and Brotli compression of static assets:
-    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
