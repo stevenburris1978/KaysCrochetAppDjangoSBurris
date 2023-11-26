@@ -159,7 +159,7 @@ ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
 if ON_HEROKU:
     # Use the production static files directory
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 else:
     # Use the local static files directory
