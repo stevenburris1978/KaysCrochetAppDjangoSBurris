@@ -66,8 +66,8 @@
 async function createPaymentIntent(amount) {
     try {
         // Ensure the amount is at least $0.50
-        const totalAmount = Math.max(0.5, parseFloat(amount));
-        const totalAmountCents = Math.max(50, Math.ceil(totalAmount * 100));
+        const totalAmount = Math.max(0.5, parseFloat(amount) / 100);  // Convert cents to dollars
+        const totalAmountCents = Math.max(50, Math.ceil(amount));
 
         const response = await fetch('{% url 'kayscrochetapp:create_payment_intent' %}', {
             method: 'POST',
