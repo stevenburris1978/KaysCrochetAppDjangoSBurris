@@ -30,6 +30,7 @@
                     {% if user.is_authenticated %}
                     <!-- User is authenticated -->
                     <div class="d-flex justify-content-center align-items-center">
+
                         <!-- Navigation Buttons -->
                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
@@ -43,7 +44,16 @@
                         </div>
                         {% endif %}
                     </div>
-                    <p class="m-0 me-2" style="text-transform: uppercase;">Welcome, {{ user.username }}!</p>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="ms-1">
+                            <p class="m-0 me-2" style="text-transform: uppercase;">Welcome, {{ user.username }}!</p>
+                        </div>
+                        <div class="ms-1">
+                        {% if user.is_superuser %}
+                            <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'admin:index' %}'">ADMIN</button>
+                        {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
