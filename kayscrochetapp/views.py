@@ -284,3 +284,14 @@ def create_payment_intent(request):
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         return JsonResponse({'error': f'An unexpected error occurred: {str(e)}'}, status=500)
+
+
+@require_POST
+def clear_cart(request):
+    try:
+        # Clear the cart in the session
+        request.session['kayscrochetapp:cart'] = {}
+        return JsonResponse({'success': True})
+    except Exception as e:
+        # Handle the exception here
+        return JsonResponse({'error': str(e)}, status=500)

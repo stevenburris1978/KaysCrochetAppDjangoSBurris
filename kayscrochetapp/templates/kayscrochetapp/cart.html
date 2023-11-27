@@ -196,6 +196,9 @@ document.getElementById('submit-button').addEventListener('click', async functio
         } else {
             // The payment succeeded
             if (paymentIntent.status === 'succeeded') {
+                // Clear the cart on successful payment
+                await clearCart();
+                
                 // Redirect to success page
                 window.location.href = '{% url 'kayscrochetapp:success' %}';
             }
@@ -204,6 +207,28 @@ document.getElementById('submit-button').addEventListener('click', async functio
         console.error('An error occurred:', error);
     }
 });
+
+async function clearCart() {
+    try {
+        // Use fetch to submit the form asynchronously
+        const response = await fetch('{% url 'kayscrochetapp:clear_cart' %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        });
+
+        // Check if the response indicates success (2xx status code)
+        if (response.ok) {
+            console.log('Cart cleared successfully');
+        } else {
+            console.error('Cart clearance failed with status:', response.status);
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+}
 </script>
 
 {% endblock %}

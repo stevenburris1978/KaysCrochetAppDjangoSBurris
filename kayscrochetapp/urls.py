@@ -18,5 +18,5 @@ urlpatterns = [
     path('cancel', CancelView.as_view(), name='cancel'),
     path('success', SuccessView.as_view(), name='success'),
     path('create_payment_intent/', views.create_payment_intent, name='create_payment_intent'),
-
+    path('clear_cart/', views.clear_cart, name='clear_cart'),
 ]
