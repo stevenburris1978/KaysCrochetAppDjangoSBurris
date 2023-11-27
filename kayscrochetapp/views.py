@@ -111,6 +111,8 @@ def add_to_cart(request, pk):
         form = AddToCartForm(request.POST)
         try:
             if form.is_valid():
+                full_name = form.cleaned_data['full_name']
+                address = form.cleaned_data['address']
                 quantity = form.cleaned_data['quantity']
 
                 # Retrieve or initialize the cart dictionary from the session
@@ -238,9 +240,18 @@ def create_payment_intent(request):
         # Extract the amount from the request, adjust this based on your needs
         amount_cents = int(request.POST.get('amount', 0))
 
+        # Extract additional data from the request
+        full_name = request.POST.get('full_name')
+        address = request.POST.get('address')
+        item_details = request.POST.get('item_details')
+
         # Validate required fields
         if not amount_cents:
             raise ValueError("Amount is required")
+
+        # Validate required fields
+        if not full_name or not address or not item_details:
+            raise ValueError("Full name, address, and item details are required")
 
         # Convert amount to dollars
         amount_dollars = Decimal(amount_cents) / Decimal(100.0)
@@ -252,6 +263,8 @@ def create_payment_intent(request):
             amount=amount_cents,
             currency='usd',
             payment_method_types=['card'],  # Adjust based on your needs
+            description=f"Payment for {item_details} by {full_name} at {address}",
+            metadata={'full_name': full_name, 'address': address, 'item_details': item_details},
         )
 
 
