@@ -15,7 +15,7 @@
            <li id="item_{{ cart_item.item.pk }}">
                 <h4 style="text-transform: uppercase;">{{ cart_item.item.item_title }}</h4>
                 {% if cart_item.item.image %}
-                    <img src="{{ cart_item.item.image.url }}" alt="{{ item.item_title }}">
+                    <img src="{{ cart_item.item.image.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
                 {% endif %}<br>
                 Quantity: {{ cart_item.quantity }}<br>
                 Price Each: ${{ cart_item.price|floatformat:2 }}<br>
