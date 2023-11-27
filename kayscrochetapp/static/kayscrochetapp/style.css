@@ -79,10 +79,5 @@ input {
     border-radius: 2.5rem;
 }
 
-.image {
-  width: 20%;
-  height: 25%;
-  object-fit: cover; /* Maintain aspect ratio while covering the container */
-}
 
 

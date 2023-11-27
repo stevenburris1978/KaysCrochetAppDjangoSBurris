@@ -17,18 +17,18 @@
                         <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none; text-transform: uppercase;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
                         <div style="padding: .5rem">
                             {% if item.image %}
-                                <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
+                                <img src="{{ item.image.url }}" alt="{{ item.item_title }}" style="width: 30%; height: auto;">
                             {% endif %}
                             {% if item.image2 %}
-                                <img src="{{ item.image2.url }}" alt="{{ item.item_title }}">
+                                <img src="{{ item.image2.url }}" alt="{{ item.item_title }}" style="width: 30%; height: auto;">
                             {% endif %}
                         </div>
                         <div style="padding: .5rem">
                             {% if item.image3 %}
-                                <img src="{{ item.image3.url }}" alt="{{ item.item_title }}">
+                                <img src="{{ item.image3.url }}" alt="{{ item.item_title }}" style="width: 30%; height: auto;">
                             {% endif %}
                             {% if item.image4 %}
-                                <img src="{{ item.image4.url }}" alt="{{ item.item_title }}">
+                                <img src="{{ item.image4.url }}" alt="{{ item.item_title }}" style="width: 30%; height: auto;">
                             {% endif %}
                         </div>
                         <h4>Description:</h4>
