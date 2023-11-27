@@ -63,6 +63,10 @@
 <script>
 async function createPaymentIntent(amount) {
     try {
+        // Ensure the amount is at least $0.50
+        const totalAmount = Math.max(0.5, parseFloat(amount));
+        const totalAmountCents = Math.max(50, Math.ceil(totalAmount * 100));
+
         const response = await fetch('{% url 'kayscrochetapp:create_payment_intent' %}', {
             method: 'POST',
             headers: {
@@ -70,7 +74,7 @@ async function createPaymentIntent(amount) {
                 'X-CSRFToken': '{{ csrf_token }}',
             },
             body: new URLSearchParams({
-                amount: amount,
+                amount: totalAmountCents,
             }),
         });
 
@@ -86,6 +90,7 @@ async function createPaymentIntent(amount) {
         return null;
     }
 }
+
 
 async function removeItem(itemId) {
     try {
@@ -162,11 +167,12 @@ card.mount('#card-element');
 
 document.getElementById('submit-button').addEventListener('click', async function() {
     try {
-              // Calculate the total amount
-        const totalAmount = parseInt('{{ items|sum_attribute:'total_price'|floatformat:2 }}', 10);
+        // Calculate the total amount
+        const totalAmount = parseFloat('{{ items|sum_attribute:'total_price'|floatformat:2 }}');
+        const totalAmountCents = Math.max(50, Math.ceil(totalAmount * 100));
 
         // Create PaymentIntent
-        const clientSecret = await createPaymentIntent(totalAmount);
+        const clientSecret = await createPaymentIntent(totalAmountCents);
 
         if (!clientSecret) {
             console.error('Failed to retrieve PaymentIntent client secret');

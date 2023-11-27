@@ -236,20 +236,24 @@ def create_payment_intent(request):
             raise PermissionError("Unauthorized access")
 
         # Extract the amount from the request, adjust this based on your needs
-        amount = int(request.POST.get('amount', 0))
+        amount_cents = int(request.POST.get('amount', 0))
 
         # Validate required fields
-        if not amount:
+        if not amount_cents:
             raise ValueError("Amount is required")
+
+        # Convert amount to dollars
+        amount_dollars = Decimal(amount_cents) / Decimal(100.0)
 
         # Perform additional authentication checks here if needed
 
         # Create a PaymentIntent
         intent = stripe.PaymentIntent.create(
-            amount=amount,
+            amount=amount_cents,
             currency='usd',
             payment_method_types=['card'],  # Adjust based on your needs
         )
+
 
         return JsonResponse({'clientSecret': intent.client_secret})
 
