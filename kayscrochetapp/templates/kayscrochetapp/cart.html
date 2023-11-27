@@ -39,7 +39,7 @@
             <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
         <!-- Add Stripe Payment Form -->
         <div style="border: 0.0625rem solid #000; border-radius: 0.3125rem; padding: .5rem;">
-            <form id="stripe-form" autocomplete="off">
+            <form id="stripe-form">
                 <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
                 <div id="card-element"></div>
                 <button id="submit-button" type="button">Pay Now</button>
@@ -166,9 +166,6 @@ var card = elements.create('card');
 
 // Add an instance of the card Element into the `card-element` div
 card.mount('#card-element');
-
-// Explicitly set autocomplete to 'off'
-document.getElementById('card-element').setAttribute('autocomplete', 'off');
 
 document.getElementById('submit-button').addEventListener('click', async function() {
     try {
