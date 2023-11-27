@@ -38,11 +38,13 @@
         {% if items|sum_attribute:'total_price' %}
             <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
         <!-- Add Stripe Payment Form -->
-        <form id="stripe-form">
-            <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
-            <div id="card-element"></div>
-            <button id="submit-button" type="button">Pay Now</button>
-        </form>
+        <div style="border: 0.0625rem solid #000; border-radius: 0.3125rem; padding: .5rem;">
+            <form id="stripe-form">
+                <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
+                <div id="card-element"></div>
+                <button id="submit-button" type="button">Pay Now</button>
+            </form>
+        </div>
         {% else %}
           <p>Total Cart Price: $0.00</p>
         {% endif %}
