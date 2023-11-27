@@ -198,7 +198,7 @@ document.getElementById('submit-button').addEventListener('click', async functio
             if (paymentIntent.status === 'succeeded') {
                 // Clear the cart on successful payment
                 await clearCart();
-                
+
                 // Redirect to success page
                 window.location.href = '{% url 'kayscrochetapp:success' %}';
             }
