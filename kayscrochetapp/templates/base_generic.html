@@ -30,7 +30,6 @@
                     {% if user.is_authenticated %}
                     <!-- User is authenticated -->
                     <div class="d-flex justify-content-center align-items-center">
-                        <p class="m-0 me-2">Welcome, {{ user.username }}!</p>
                         <!-- Navigation Buttons -->
                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:cart' %}'">CART</button>
@@ -44,6 +43,7 @@
                         </div>
                         {% endif %}
                     </div>
+                    <p class="m-0 me-2" style="text-transform: uppercase;">Welcome, {{ user.username }}!</p>
                 </div>
             </div>
         </div>
@@ -51,8 +51,8 @@
 
     <!-- Help Modal Button -->
     <button type="button" class="button text-light bg-danger-subtle fixed-top" data-bs-toggle="modal"
-        data-bs-target="#exampleModal" style="width: 3rem; margin-left: 47.5%;">
-        HELP
+        data-bs-target="#exampleModal" style="width: 7rem; margin-left: 47.5%;">
+        NEED HELP?
     </button>
 
     <!-- Help Modal -->
