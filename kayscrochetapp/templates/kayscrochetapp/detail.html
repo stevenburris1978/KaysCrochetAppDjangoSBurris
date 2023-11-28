@@ -4,11 +4,6 @@
 
 {% if user.is_authenticated %}
 {% block content %}
-<form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">ADD TO CART</button>
-</form>
 <form action="{% url 'kayscrochetapp:like' item.id %}" method="post">
 {% csrf_token %}
     <fieldset>

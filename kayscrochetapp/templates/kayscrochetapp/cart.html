@@ -4,6 +4,7 @@
 {% block title %}Cart{% endblock %}
 
 {% block content %}
+<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
 <form method="post" id="removeItemForm">
     {% csrf_token %}
     <fieldset>
@@ -62,8 +63,12 @@
 <!-- Include Stripe.js script -->
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-async function createPaymentIntent(amount) {
+async function createPaymentIntent(amount, itemTitle, full_name, address) {
     try {
+        const full_name = document.getElementById('id_full_name').value;
+        const address = document.getElementById('id_address').value;
+        const item_details = itemTitle;
+
         // Ensure the amount is at least $0.50
         const totalAmount = Math.max(0.5, parseFloat(amount) / 100);  // Convert cents to dollars
         const totalAmountCents = Math.max(50, Math.ceil(amount));
@@ -76,6 +81,9 @@ async function createPaymentIntent(amount) {
             },
             body: new URLSearchParams({
                 amount: totalAmountCents,
+                full_name: full_name,
+                address: address,
+                item_details: item_details,
             }),
         });
 
@@ -173,7 +181,7 @@ document.getElementById('submit-button').addEventListener('click', async functio
         const totalAmountCents = Math.max(50, Math.ceil(totalAmount * 100));
 
         // Create PaymentIntent
-        const clientSecret = await createPaymentIntent(totalAmountCents);
+        const clientSecret = await createPaymentIntent(totalAmountCents, '{{ cart_item.item.item_title }}', '{{ cart_item.full_name }}', '{{ cart_item.address }}');
 
         if (!clientSecret) {
             console.error('Failed to retrieve PaymentIntent client secret');
