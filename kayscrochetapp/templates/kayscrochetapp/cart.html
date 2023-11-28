@@ -4,7 +4,6 @@
 {% block title %}Cart{% endblock %}
 
 {% block content %}
-<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
 <form method="post" id="removeItemForm">
     {% csrf_token %}
     <fieldset>
