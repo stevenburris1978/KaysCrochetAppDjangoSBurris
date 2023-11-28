@@ -14,7 +14,7 @@ from django.views import generic
 from django.views.generic import TemplateView
 
 from .forms import SignUpForm, SignInForm, AddToCartForm
-from .models import Choice, Item, LikeItem
+from .models import Choice, Item, LikeItem, Order
 import stripe
 import logging
 
@@ -289,8 +289,42 @@ def create_payment_intent(request):
 @require_POST
 def clear_cart(request):
     try:
+        # Extract user information from the request
+        full_name = request.POST.get('full_name')
+        street = request.POST.get('street')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+
+        total_price = request.session.get('kayscrochetapp:cart_total_price', 0)
+
+        # Create a list to store the titles of all items in the cart
+        item_titles = []
+
+        # Create an Order instance and save it to the database
+        order = Order.objects.create(
+            full_name=full_name,
+            street=street,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            total_price=total_price,
+            item_title="Items",  # Replace with the actual item title
+        )
+
+        # Iterate over items in the cart and retrieve their titles
+        for item_id, item_data in request.session.get('kayscrochetapp:cart', {}).items():
+            item = get_object_or_404(Item, pk=item_id)
+            item_titles.append(item.item_title)
+
+        # Update the item_title field of the Order model with a comma-separated list of item titles
+        order.item_title = ", ".join(item_titles)
+        order.save()
+
         # Clear the cart in the session
         request.session['kayscrochetapp:cart'] = {}
+        request.session['kayscrochetapp:cart_total_price'] = 0
+
         return JsonResponse({'success': True})
     except Exception as e:
         # Handle the exception here

@@ -43,3 +43,20 @@ class LikeItem(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class Order(models.Model):
+    full_name = models.CharField(max_length=100)
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=20)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    item_title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.full_name}'s Order"
+
+    class Meta:
+        verbose_name = "Order"
+        verbose_name_plural = "Orders"
