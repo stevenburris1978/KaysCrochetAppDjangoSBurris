@@ -37,25 +37,29 @@
         </ul>
         {% if items|sum_attribute:'total_price' %}
             <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
-        <!-- Add Address Form -->
-        <label for="full_name">Full Name:</label>
-        <input type="text" id="full_name" name="full_name" required><br>
-        <label for="street">Street:</label>
-        <input type="text" id="street" name="street" required><br>
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" required><br>
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state" required><br>
-        <label for="zip_code">Zip Code:</label>
-        <input type="text" id="zip_code" name="zip_code" required><br>
-        <!-- Add Stripe Payment Form -->
-        <div style="border: 0.0625rem solid #000; border-radius: 0.3125rem; padding: .5rem;">
+        <fieldset>
+            <legend><h3 style="text-transform: uppercase;">ADDRESS FORM</h3></legend>
+            <!-- Add Address Form -->
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" required><br>
+            <label for="street">Street:</label>
+            <input type="text" id="street" name="street" required><br>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required><br>
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" required><br>
+            <label for="zip_code">Zip Code:</label>
+            <input type="text" id="zip_code" name="zip_code" required><br>
+        </fieldset>
+        <fieldset>
+            <legend><h3 style="text-transform: uppercase;">PAYMENT CARD</h3></legend>
+            <!-- Add Stripe Payment Form -->
             <form id="stripe-form">
                 <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
                 <div id="card-element"></div>
                 <button id="submit-button" type="button">Pay Now</button>
             </form>
-        </div>
+        </fieldset>
         {% else %}
           <p>Total Cart Price: $0.00</p>
         {% endif %}

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -296,34 +297,39 @@ def clear_cart(request):
         state = request.POST.get('state')
         zip_code = request.POST.get('zip_code')
 
-        total_price = request.session.get('kayscrochetapp:cart_total_price', 0)
+        # Retrieve the cart data from the session
+        cart = request.session.get('kayscrochetapp:cart', {})
 
-        # Create a list to store the titles of all items in the cart
-        item_titles = []
+        # Calculate the total price based on items in the cart
+        total_price = sum(float(item_data['total_price']) for item_data in cart.values())
 
-        # Create an Order instance and save it to the database
-        order = Order.objects.create(
-            full_name=full_name,
-            street=street,
-            city=city,
-            state=state,
-            zip_code=zip_code,
-            total_price=total_price,
-            item_title="Items",  # Replace with the actual item title
-        )
+        # Use a database transaction to ensure consistency
+        with transaction.atomic():
+            # Create an Order instance and save it to the database
+            order = Order.objects.create(
+                full_name=full_name,
+                street=street,
+                city=city,
+                state=state,
+                zip_code=zip_code,
+                total_price=total_price,
+                item_title="Items",  # Replace with the actual item title
+            )
 
-        # Iterate over items in the cart and retrieve their titles
-        for item_id, item_data in request.session.get('kayscrochetapp:cart', {}).items():
-            item = get_object_or_404(Item, pk=item_id)
-            item_titles.append(item.item_title)
+            # Create a list to store the titles of all items in the cart
+            item_titles = []
 
-        # Update the item_title field of the Order model with a comma-separated list of item titles
-        order.item_title = ", ".join(item_titles)
-        order.save()
+            # Iterate over items in the cart and retrieve their titles
+            for item_id, item_data in cart.items():
+                item = get_object_or_404(Item, pk=item_id)
+                item_titles.append(item.item_title)
+
+            # Update the item_title field of the Order model with a comma-separated list of item titles
+            order.item_title = ", ".join(item_titles)
+            order.save()
 
         # Clear the cart in the session
         request.session['kayscrochetapp:cart'] = {}
-        request.session['kayscrochetapp:cart_total_price'] = 0
 
         return JsonResponse({'success': True})
     except Exception as e:
