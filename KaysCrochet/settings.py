@@ -148,8 +148,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_AKEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'kayscrochetbucket'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_QUERYSTRING_AUTH = False
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AUTH_USER_MODEL = 'auth.User'
 
@@ -165,10 +175,10 @@ else:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_local')
 
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_live_51OEipnKqwOVEoFpANoDETgXJLZgQsOhk6gMil8iAyHBjAq2YnCmQ7l43dEzhywO5cQLhOMgLnynHwRPqv6dY9v1L00LmGhjCnW')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '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')
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
-STRIPE_WEBHOOK_SECRET = "whsec_8b06fdfe2b2255f11d3d38a01b2ba7d84cadacc485e482b747241c739843ff64"
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
