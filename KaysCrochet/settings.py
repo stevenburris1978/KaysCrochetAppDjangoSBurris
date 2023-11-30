@@ -135,20 +135,14 @@ USE_I18N = True
 
 USE_TZ = True
 
-DISABLE_COLLECTSTATIC = os.environ.get('DISABLE_COLLECTSTATIC', '0') == '1'
 
-# Use '/static/' locally
-if ON_HEROKU is None:
-    STATIC_URL = '/static/'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-# Use S3 URL on Heroku
-if ON_HEROKU:
-    STATIC_URL = 'https://' + os.environ.get('AWS_STORAGE_BUCKET_NAME') + '.s3.amazonaws.com/'
+STATIC_URL = '/static/'
 
 # Static files (CSS, JavaScript, images)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -165,10 +159,7 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_FILE_OVERWRITE = False
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
-
-
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
-
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AUTH_USER_MODEL = 'auth.User'
