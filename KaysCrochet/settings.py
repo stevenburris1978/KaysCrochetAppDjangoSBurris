@@ -144,7 +144,7 @@ if ON_HEROKU:
     STATIC_URL = 'https://' + os.environ.get('AWS_STORAGE_BUCKET_NAME') + '.s3.amazonaws.com/'
 
 # Static files (CSS, JavaScript, images)
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
