@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Choice, Item, LikeItem, Order
+from .models import Choice, Item, LikeItem, Customerorder
 
 
 admin.site.site_header = "Kay's Crochet Administration"
@@ -21,11 +21,11 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ["item_title"]
 
 
-class OrderAdmin(admin.ModelAdmin):
+class CustomerOrderAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'street', 'city', 'state', 'zip_code', 'total_price', 'item_title')
 
 
 admin.site.register(Choice)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(LikeItem)
-admin.site.register(Order, OrderAdmin)
+admin.site.register(Customerorder, CustomerOrderAdmin)

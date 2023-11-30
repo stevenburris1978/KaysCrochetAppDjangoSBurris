@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
-import datetime
 from django.utils import timezone
 
 
@@ -46,7 +45,7 @@ class LikeItem(models.Model):
         return self.username
 
 
-class Order(models.Model):
+class Customerorder(models.Model):
     full_name = models.CharField(max_length=100)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
@@ -59,5 +58,5 @@ class Order(models.Model):
         return f"{self.full_name}'s Order"
 
     class Meta:
-        verbose_name = "Order"
-        verbose_name_plural = "Orders"
+        verbose_name = "Customer_Order"
+        verbose_name_plural = "Customer_Orders"

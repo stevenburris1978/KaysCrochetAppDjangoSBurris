@@ -15,7 +15,7 @@ from django.views import generic
 from django.views.generic import TemplateView
 
 from .forms import SignUpForm, SignInForm, AddToCartForm
-from .models import Choice, Item, LikeItem, Order
+from .models import Choice, Item, LikeItem, Customerorder
 import stripe
 import logging
 
@@ -306,7 +306,7 @@ def clear_cart(request):
         # Use a database transaction to ensure consistency
         with transaction.atomic():
             # Create an Order instance and save it to the database
-            order = Order.objects.create(
+            customerorder = Customerorder.objects.create(
                 full_name=full_name,
                 street=street,
                 city=city,
@@ -325,8 +325,8 @@ def clear_cart(request):
                 item_titles.append(item.item_title)
 
             # Update the item_title field of the Order model with a comma-separated list of item titles
-            order.item_title = ", ".join(item_titles)
-            order.save()
+            customerorder.item_title = ", ".join(item_titles)
+            customerorder.save()
 
         # Clear the cart in the session
         request.session['kayscrochetapp:cart'] = {}
