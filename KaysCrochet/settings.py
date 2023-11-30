@@ -135,6 +135,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+DISABLE_COLLECTSTATIC = os.environ.get('DISABLE_COLLECTSTATIC', '0') == '1'
+
 # Use '/static/' locally
 if ON_HEROKU is None:
     STATIC_URL = '/static/'
