@@ -34,21 +34,7 @@ class IndexView(generic.ListView):
     context_object_name = "latest_item_list"
 
     def get_queryset(self):
-        # Log the start of the get_queryset method
-        logger.debug("Fetching the latest items for the index page")
-
-        queryset = Item.objects.order_by("-pub_date")[:100]
-
-        # Log the number of items retrieved
-        logger.debug(f"Number of items retrieved: {queryset.count()}")
-
-        # Log S3-related information
-        for item in queryset:
-            if item.image:
-                logger.debug(f"S3 Image URL for item {item.id}: {item.image.url}")
-            # Repeat similar logs for other image fields (image2, image3, image4) if needed
-
-        return queryset
+        return Item.objects.order_by("-pub_date")[:100]
 
     @method_decorator(login_required(login_url='kayscrochetapp:signin'))
     def dispatch(self, *args, **kwargs):
