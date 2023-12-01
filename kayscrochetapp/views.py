@@ -20,12 +20,35 @@ import stripe
 import logging
 
 
+# Add the following lines to enable debugging of boto3 (S3 library)
+logging.getLogger('boto3').setLevel(logging.DEBUG)
+logging.getLogger('botocore').setLevel(logging.DEBUG)
+
+# Add the following line to enable debugging of your code
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+
 class IndexView(generic.ListView):
     template_name = "kayscrochetapp/index.html"
     context_object_name = "latest_item_list"
 
     def get_queryset(self):
-        return Item.objects.order_by("-pub_date")[:100]
+        # Log the start of the get_queryset method
+        logger.debug("Fetching the latest items for the index page")
+
+        queryset = Item.objects.order_by("-pub_date")[:100]
+
+        # Log the number of items retrieved
+        logger.debug(f"Number of items retrieved: {queryset.count()}")
+
+        # Log S3-related information
+        for item in queryset:
+            if item.image:
+                logger.debug(f"S3 Image URL for item {item.id}: {item.image.url}")
+            # Repeat similar logs for other image fields (image2, image3, image4) if needed
+
+        return queryset
 
     @method_decorator(login_required(login_url='kayscrochetapp:signin'))
     def dispatch(self, *args, **kwargs):

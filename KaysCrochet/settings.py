@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import logging
+import sys
 
 # Load environment variables from .env file
 load_dotenv()
@@ -185,3 +187,13 @@ if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+if 'test' not in sys.argv and 'collectstatic' not in sys.argv:
+    logging.basicConfig(level=logging.DEBUG)
+
+    # Add the following two lines to enable debugging of boto3 (S3 library)
+    logging.getLogger('boto3').setLevel(logging.DEBUG)
+    logging.getLogger('botocore').setLevel(logging.DEBUG)
+
+    # Add the following line to enable debugging of your code
+    logging.getLogger(__name__).setLevel(logging.DEBUG)
