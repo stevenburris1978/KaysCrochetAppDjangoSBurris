@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```
 # How to set up .env variables - they need to be in a .env root directory with your keys for local development to work
 DJANGO_SECRET_KEY=
-AWS_AKEY= this is the Amazon S3 AWS_ACCESS_KEY_ID
+AWS_AKEY=
 AWS_SECRET_ACCESS_KEY=
 STRIPE_PUBLIC_KEY=
 STRIPE_SECRET_KEY=
