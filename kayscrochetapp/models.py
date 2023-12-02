@@ -26,6 +26,11 @@ class Item(models.Model):
     def was_published_recently(self):
         now = timezone.now()
         one_day_ago = now - timezone.timedelta(days=1)
+
+        # If self.pub_date is naive, make it timezone-aware
+        if timezone.is_naive(self.pub_date):
+            self.pub_date = timezone.make_aware(self.pub_date)
+
         return one_day_ago <= self.pub_date <= now
 
 
