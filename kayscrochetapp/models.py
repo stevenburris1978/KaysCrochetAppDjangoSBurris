@@ -25,7 +25,8 @@ class Item(models.Model):
     )
     def was_published_recently(self):
         now = timezone.now()
-        return timezone.now() - timezone.timedelta(days=1) <= self.pub_date <= timezone.now()
+        one_day_ago = now - timezone.timedelta(days=1)
+        return one_day_ago <= self.pub_date <= now
 
 
 class Choice(models.Model):
