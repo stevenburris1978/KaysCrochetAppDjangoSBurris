@@ -197,3 +197,34 @@ if 'test' not in sys.argv and 'collectstatic' not in sys.argv:
 
     # Add the following line to enable debugging of your code
     logging.getLogger(__name__).setLevel(logging.DEBUG)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',  # Set the desired logging level here
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'kayscrochetapp': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'boto3': {  # Add boto3 logger configuration
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
