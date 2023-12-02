@@ -13,8 +13,6 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
-import logging
-import sys
 
 # Load environment variables from .env file
 load_dotenv()
@@ -153,16 +151,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'kayscrochetappbucket'
+AWS_STORAGE_BUCKET_NAME = 'kayscrochetbucket'
 AWS_S3_REGION_NAME = 'us-east-2'
-AWS_S3_CUSTOM_DOMAIN = f'kayscrochetappbucket.s3.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_QUERYSTRING_AUTH = False
 AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_FILE_OVERWRITE = False
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
-DEFAULT_FILE_STORAGE = 'KaysCrochet.storage_backends.MediaStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AUTH_USER_MODEL = 'auth.User'
 
@@ -187,44 +185,3 @@ if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-if 'test' not in sys.argv and 'collectstatic' not in sys.argv:
-    logging.basicConfig(level=logging.DEBUG)
-
-    # Add the following two lines to enable debugging of boto3 (S3 library)
-    logging.getLogger('boto3').setLevel(logging.DEBUG)
-    logging.getLogger('botocore').setLevel(logging.DEBUG)
-
-    # Add the following line to enable debugging of your code
-    logging.getLogger(__name__).setLevel(logging.DEBUG)
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',  # Set the desired logging level here
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'kayscrochetapp': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'boto3': {  # Add boto3 logger configuration
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}

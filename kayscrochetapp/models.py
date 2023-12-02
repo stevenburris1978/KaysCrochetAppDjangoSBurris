@@ -7,10 +7,10 @@ from django.utils import timezone
 class Item(models.Model):
     item_title = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(upload_to='items_images/%Y/%m/%d/', blank=True, null=True)
-    image2 = models.ImageField(upload_to='items_images/%Y/%m/%d/', blank=True, null=True)
-    image3 = models.ImageField(upload_to='items_images/%Y/%m/%d/', blank=True, null=True)
-    image4 = models.ImageField(upload_to='items_images/%Y/%m/%d/', blank=True, null=True)
+    image = models.ImageField(upload_to='items_images/', blank=True, null=True)
+    image2 = models.ImageField(upload_to='items_images/', blank=True, null=True)
+    image3 = models.ImageField(upload_to='items_images/', blank=True, null=True)
+    image4 = models.ImageField(upload_to='items_images/', blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     pub_date = models.DateTimeField("date published")
     no_of_likes = models.IntegerField(default=0)
@@ -60,30 +60,3 @@ class Customerorder(models.Model):
     class Meta:
         verbose_name = "Customer_Order"
         verbose_name_plural = "Customer_Orders"
-
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',  # Set the desired logging level here
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Set the desired logging level for Django-related logs
-            'propagate': True,
-        },
-        'kayscrochetapp': {  # Replace 'your_app_name' with the actual name of your Django app
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Set the desired logging level for your app's logs
-            'propagate': True,
-        },
-    },
-}

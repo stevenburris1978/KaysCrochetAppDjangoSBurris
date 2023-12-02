@@ -20,15 +20,6 @@ import stripe
 import logging
 
 
-# Add the following lines to enable debugging of boto3 (S3 library)
-logging.getLogger('boto3').setLevel(logging.DEBUG)
-logging.getLogger('botocore').setLevel(logging.DEBUG)
-
-# Add the following line to enable debugging of your code
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-
 class IndexView(generic.ListView):
     template_name = "kayscrochetapp/index.html"
     context_object_name = "latest_item_list"
