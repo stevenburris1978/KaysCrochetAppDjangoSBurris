@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # Determine if the application is running on Heroku
 ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
-DEBUG = False  # DEBUG is True if not on Heroku, use in end (DEBUG = not ON_HEROKU )False if on Heroku
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
