@@ -29,9 +29,6 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-# Determine if the application is running on Heroku
-ON_HEROKU = os.environ.get('ON_HEROKU', None)
-
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -158,9 +155,6 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AUTH_USER_MODEL = 'auth.User'
-
-# Determine if the application is running on Heroku
-ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
 if ON_HEROKU:
     # Use the production static files directory
