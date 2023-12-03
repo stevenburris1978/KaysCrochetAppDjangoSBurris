@@ -15,7 +15,6 @@ import dj_database_url
 from dotenv import load_dotenv
 
 LOG_DIR = os.path.join('BASE_DIR', 'logs')
-os.makedirs(LOG_DIR, exist_ok=True)
 
 LOGGING = {
     'version': 1,
