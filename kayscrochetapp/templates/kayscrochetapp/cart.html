@@ -37,6 +37,8 @@
         </ul>
         {% if items|sum_attribute:'total_price' %}
             <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
+            <p>Shipping is included.</p>
+            <p>Sales tax is not included.</p>
         <fieldset>
             <legend><h3 style="text-transform: uppercase;">ADDRESS FORM</h3></legend>
             <!-- Add Address Form -->
