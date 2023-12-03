@@ -4,11 +4,14 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
@@ -220,7 +223,7 @@ class CancelView(TemplateView):
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Define a list of allowed IP addresses or domains
-ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000']
+ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000', 'kayscrochet.us']
 
 # Define the logger
 logger = logging.getLogger(__name__)
@@ -324,12 +327,35 @@ def clear_cart(request):
                 item = get_object_or_404(Item, pk=item_id)
                 item_titles.append(item.item_title)
 
+                # Send email to the logged-in user
+                user_email = request.user.email
+
+                print(f"Sending email to user: {user_email}")
+
+                subject = 'Order Confirmation'
+                message = f'Thank you for your order. Your invoice details are:\n\nFull Name: {full_name}\nStreet: {street}\nCity: {city}\nState: {state}\nZIP Code: {zip_code}\nTotal Price: ${total_price:.2f}\nItems: {", ".join(item_titles)}\nShipping is included.\nPrice does not include sales or use tax that you may need to pay in your state.'
+                from_email = 'kayscrochetus@gmail.com'
+                recipient_list = [user_email]
+                # Check if there's an error when sending the email
+                try:
+                    send_mail(subject, message, from_email, recipient_list)
+                except Exception as email_error:
+                    print(f"Email sending error: {email_error}")
+
             # Update the item_title field of the Order model with a comma-separated list of item titles
             customerorder.item_title = ", ".join(item_titles)
             customerorder.save()
 
         # Clear the cart in the session
         request.session['kayscrochetapp:cart'] = {}
+
+        # Send email to kayscrochetus@gmail.com
+        admin_email = 'kayscrochetus@gmail.com'
+        subject = 'New Order Received'
+        message = f'New order details:\n\nFull Name: {full_name}\nStreet: {street}\nCity: {city}\nState: {state}\nZIP Code: {zip_code}\nTotal Price: ${total_price:.2f}\nItems: {", ".join(item_titles)}'
+        from_email = 'kayscrochetus@gmail.com'
+        recipient_list = [admin_email]
+        send_mail(subject, message, from_email, recipient_list)
 
         return JsonResponse({'success': True})
     except Exception as e:

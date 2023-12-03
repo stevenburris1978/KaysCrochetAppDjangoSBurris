@@ -69,11 +69,6 @@
     </fieldset>
 </form>
 <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
-<!-- Add this script to HTML to define a JavaScript variable with the Stripe publishable key -->
-<script>
-  var stripePublishableKey = '{{ STRIPE_PUBLIC_KEY }}';
-  console.log('Stripe Publishable Key:', stripePublishableKey);
-</script>
 
 <!-- Include Stripe.js script -->
 <script src="https://js.stripe.com/v3/"></script>
