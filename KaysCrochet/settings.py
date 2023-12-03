@@ -34,12 +34,7 @@ ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
 DEBUG = False  # DEBUG is True if not on Heroku, use in end (DEBUG = not ON_HEROKU )False if on Heroku
 
-if ON_HEROKU:
-    # If on Heroku, use a specific domain or IP address for ALLOWED_HOSTS
-    ALLOWED_HOSTS = ["kayscrochet.us", "kayscrochetapp-e13180bf49a3.herokuapp.com", "www.kayscrochet.us"]
-else:
-    # If not on Heroku, use '' for ALLOWED_HOSTS
-    ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
