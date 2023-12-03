@@ -17,10 +17,8 @@
 <body class="d-flex flex-column min-vh-100">
     <!-- Header Section -->
     <header class="py-3 sticky-top bg-danger-subtle flex-shrink-0 fixed-top text-center justify-content-center">
-        <!-- Header Content -->
         <div class="container-fluid">
             <div class="d-flex justify-content-center align-items-center me-4">
-                <!-- Logo -->
                 <div class="ms-2">
                     <img class="imgHeader" src="{% static 'kayscrochetapp/images/HaveAGoodDay.png' %}" alt="Have A Good Day!">
                 </div>
@@ -38,7 +36,7 @@
                             {% include 'kayscrochetapp/signout.html' %}
                         </div>
                         {% else %}
-                        <!-- User is not authenticated -->
+                        <!-- if user is not authenticated and redirect does not work-->
                         <div class="d-flex justify-content-end">
                             <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
                         </div>
