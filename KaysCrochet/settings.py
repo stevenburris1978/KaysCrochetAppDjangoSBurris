@@ -184,6 +184,8 @@ EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', 'True').lower() == 'true'
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
 
+LOG_DIR = os.environ.get('LOG_DIR', '/tmp')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -191,7 +193,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/tmp/django_errors.log',
+            'filename': os.path.join(LOG_DIR, 'django_errors.log'),
         },
     },
     'loggers': {
