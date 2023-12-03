@@ -1,2 +1,2 @@
-web: gunicorn KaysCrochet.wsgi --preload --log-file -
+web: gunicorn KaysCrochet.wsgi --preload
 

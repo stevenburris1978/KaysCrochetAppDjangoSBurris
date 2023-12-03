@@ -14,27 +14,6 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
-LOG_DIR = 'logs'
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(LOG_DIR, 'django_errors.log'),
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-}
-
 # Load environment variables from .env file
 load_dotenv()
 
