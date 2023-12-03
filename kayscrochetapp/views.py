@@ -8,17 +8,19 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
 from django.views.generic import TemplateView
 
 from .forms import SignUpForm, SignInForm, AddToCartForm
-import logging
 from .models import Choice, Item, LikeItem, Customerorder
 import stripe
+import logging
 
 
 class IndexView(generic.ListView):
@@ -68,6 +70,9 @@ def like(request, item_id):
     else:
         selected_choice.likes += 1
         selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
         return HttpResponseRedirect(reverse("kayscrochetapp:results", args=(item.id,)))
 
 
@@ -131,6 +136,7 @@ def add_to_cart(request, pk):
                 messages.success(request, f"{quantity} {item.item_title}(s) added to your cart.")
                 return redirect('kayscrochetapp:cart')  # Redirect to the cart page after adding the item
         except Exception as e:
+            # Handle the exception here, e.g., log the error
             print(f"Error adding item to cart: {e}")
             messages.error(request, 'An error occurred while processing your request.')
     else:
@@ -145,6 +151,7 @@ def cart(request):
     cart = request.session.get('kayscrochetapp:cart', {})
     items = []
 
+    # Assuming you have a model named Item, and you want to display item details in the cart
     for item_id, item_data in cart.items():
         item = get_object_or_404(Item, pk=item_id)
         quantity = item_data['quantity']
@@ -176,10 +183,12 @@ def remove_from_cart(request, item_id):
         # Save the updated cart back to the session
         request.session['kayscrochetapp:cart'] = cart
 
+        # Print debug information
         print(f"Item {item_id} removed from the cart")
 
         return JsonResponse({'removed_item_total_price': removed_item_total_price})
     else:
+        # If the item is not in the cart, return an error response
         return JsonResponse({'error': f'Item {item_id} not found in the cart'}, status=400)
 
 
@@ -240,6 +249,8 @@ def create_payment_intent(request):
         # Convert amount to dollars
         amount_dollars = Decimal(amount_cents) / Decimal(100.0)
 
+        # Perform additional authentication checks here if needed
+
         # Create a PaymentIntent
         intent = stripe.PaymentIntent.create(
             amount=amount_cents,
@@ -295,7 +306,7 @@ def clear_cart(request):
         # Calculate the total price based on items in the cart
         total_price = sum(float(item_data['total_price']) for item_data in cart.values())
 
-        # Using a database transaction
+        # Use a database transaction to ensure consistency
         with transaction.atomic():
             # Create an Order instance and save it to the database
             customerorder = Customerorder.objects.create(
@@ -331,7 +342,7 @@ def clear_cart(request):
                 except Exception as email_error:
                     print(f"Email sending error: {email_error}")
 
-            # Update the item_title field of the Order model
+            # Update the item_title field of the Order model with a comma-separated list of item titles
             customerorder.item_title = ", ".join(item_titles)
             customerorder.save()
 
