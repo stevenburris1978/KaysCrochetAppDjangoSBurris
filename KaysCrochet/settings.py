@@ -17,17 +17,9 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = False
 
@@ -78,9 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # Determine if the application is running on Heroku
 ON_HEROKU = os.environ.get('ON_HEROKU', None)
 
@@ -147,8 +136,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'kayscrochetbucket'
-AWS_S3_REGION_NAME = 'us-east-2'
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_QUERYSTRING_AUTH = False
 AWS_DEFAULT_ACL = 'public-read'
@@ -179,8 +168,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # Set SMTP server details
 EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
-EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT'))  # port for SMTP server
-EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', 'True').lower() == 'true'  # use SSL/TLS for secure connection
+EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT'))
+EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', 'True').lower() == 'true'
 
 # Set SMTP username and password
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')

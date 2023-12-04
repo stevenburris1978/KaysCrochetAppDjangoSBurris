@@ -151,7 +151,6 @@ def cart(request):
     cart = request.session.get('kayscrochetapp:cart', {})
     items = []
 
-    # Assuming you have a model named Item, and you want to display item details in the cart
     for item_id, item_data in cart.items():
         item = get_object_or_404(Item, pk=item_id)
         quantity = item_data['quantity']
@@ -239,7 +238,7 @@ def create_payment_intent(request):
         if client_address not in ALLOWED_ADDRESSES and client_host not in ALLOWED_ADDRESSES:
             raise PermissionError("Unauthorized access")
 
-        # Extract the amount from the request, adjust this based on your needs
+        # Extract the amount from the request
         amount_cents = int(request.POST.get('amount', 0))
 
         # Validate required fields
@@ -249,13 +248,11 @@ def create_payment_intent(request):
         # Convert amount to dollars
         amount_dollars = Decimal(amount_cents) / Decimal(100.0)
 
-        # Perform additional authentication checks here if needed
-
         # Create a PaymentIntent
         intent = stripe.PaymentIntent.create(
             amount=amount_cents,
             currency='usd',
-            payment_method_types=['card'],  # Adjust based on your needs
+            payment_method_types=['card'],
         )
 
 
@@ -316,7 +313,7 @@ def clear_cart(request):
                 state=state,
                 zip_code=zip_code,
                 total_price=total_price,
-                item_title="Items",  # Replace with the actual item title
+                item_title="Items",
             )
 
             # Create a list to store the titles of all items in the cart
@@ -342,7 +339,7 @@ def clear_cart(request):
                 except Exception as email_error:
                     print(f"Email sending error: {email_error}")
 
-            # Update the item_title field of the Order model with a comma-separated list of item titles
+            # Update the item_title field of the Order model
             customerorder.item_title = ", ".join(item_titles)
             customerorder.save()
 

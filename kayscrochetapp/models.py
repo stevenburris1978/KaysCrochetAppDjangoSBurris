@@ -27,7 +27,7 @@ class Item(models.Model):
         now = timezone.now()
         one_day_ago = now - timezone.timedelta(days=1)
 
-        # If self.pub_date is naive, make it timezone-aware
+        # Make it timezone-aware
         if timezone.is_naive(self.pub_date):
             self.pub_date = timezone.make_aware(self.pub_date)
 

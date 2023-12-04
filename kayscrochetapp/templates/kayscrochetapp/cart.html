@@ -119,7 +119,7 @@ async function removeItem(itemId) {
             },
         });
 
-        // Check if the response indicates success (2xx status code)
+        // Check if the response indicates success
         if (response.ok) {
             console.log('Item removed successfully');
 
@@ -139,7 +139,7 @@ async function removeItem(itemId) {
                 } else {
                     console.log('Item with ID ' + itemId + ' not found in the DOM');
                 }
-            }, 300);  // Adjust the delay as needed
+            }, 300);  // Adjust the delay
         } else {
             console.error('Item removal failed with status:', response.status);
         }
@@ -205,7 +205,7 @@ document.getElementById('submit-button').addEventListener('click', async functio
         );
 
         if (error) {
-            // Show error to your customer
+            // Show error to customer
             console.error(error.message);
         } else {
             // The payment succeeded
@@ -247,7 +247,7 @@ async function clearCart() {
             }),
         });
 
-        // Check if the response indicates success (2xx status code)
+        // Check if the response indicates success
         if (response.ok) {
             console.log('Cart cleared successfully');
         } else {
