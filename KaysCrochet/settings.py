@@ -29,11 +29,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
-SECURE_SSL_REDIRECT = True
 
 # Application definition
 
@@ -98,6 +96,10 @@ else:
         }
     }
 
+if ON_HEROKU:
+    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+else:
+    SECURE_SSL_REDIRECT = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
