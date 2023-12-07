@@ -60,8 +60,6 @@
                 <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
                 <div id="card-element"></div>
                 <button id="submit-button" type="button">Pay Now</button>
-                <p>Shipping price is included.</p>
-                <p>Sales tax is not included.</p>
             </form>
         </fieldset>
         {% else %}
