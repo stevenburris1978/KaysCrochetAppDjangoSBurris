@@ -187,22 +187,24 @@ def remove_from_cart(request, item_id):
 def like_item(request):
     username = request.user.username
     item_id = request.GET.get('item_id')
+    current_page = request.GET.get('current_page', 'kayscrochetapp:index')
 
     item = Item.objects.get(id=item_id)
 
     like_filter = LikeItem.objects.filter(item_id=item_id, username=username).first()
 
-    if like_filter == None:
+    if like_filter is None:
         new_like = LikeItem.objects.create(item_id=item_id, username=username)
         new_like.save()
-        item.no_of_likes = item.no_of_likes+1
+        item.no_of_likes = item.no_of_likes + 1
         item.save()
-        return redirect('kayscrochetapp:index')
     else:
         like_filter.delete()
-        item.no_of_likes = item.no_of_likes-1
+        item.no_of_likes = item.no_of_likes - 1
         item.save()
-        return redirect('kayscrochetapp:index')
+
+    # Redirect to the current_page URL
+    return redirect(current_page)
 
 
 class SuccessView(TemplateView):
