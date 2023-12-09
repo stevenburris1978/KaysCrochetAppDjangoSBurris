@@ -8,10 +8,8 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
@@ -29,10 +27,6 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return Item.objects.order_by("-pub_date")[:100]
-
-    @method_decorator(login_required(login_url='kayscrochetapp:signin'))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
 
 class DetailView(generic.DetailView):
@@ -128,7 +122,7 @@ def add_to_cart(request, pk):
                     cart[item.pk]['total_price'] = str(Decimal(cart[item.pk]['price']) * Decimal(cart[item.pk]['quantity']))
                 else:
                     # Add a new entry for the item in the cart
-                    cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)),}
+                    cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)), }
 
                 # Save the updated cart back to the session
                 request.session['kayscrochetapp:cart'] = cart
@@ -145,7 +139,7 @@ def add_to_cart(request, pk):
     return render(request, 'kayscrochetapp/detail.html', {'item': item, 'form': form})
 
 
-
+@login_required(login_url='kayscrochetapp:signin')
 def cart(request):
     # Retrieve the cart data from the session
     cart = request.session.get('kayscrochetapp:cart', {})
@@ -161,9 +155,8 @@ def cart(request):
 
         items.append({'item': item, 'quantity': quantity, 'price': price, 'total_price': total_price})
 
-    context = {'items': items,'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY}
+    context = {'items': items, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY}
     return render(request, 'kayscrochetapp/cart.html', context)
-
 
 
 @require_POST
@@ -211,6 +204,7 @@ def like_item(request):
         item.save()
         return redirect('kayscrochetapp:index')
 
+
 class SuccessView(TemplateView):
     template_name = "kayscrochetapp/payment_success.html"
 
@@ -254,7 +248,6 @@ def create_payment_intent(request):
             currency='usd',
             payment_method_types=['card'],
         )
-
 
         return JsonResponse({'clientSecret': intent.client_secret})
 

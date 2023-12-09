@@ -5,7 +5,7 @@
     <title>Sign Out</title>
 </head>
 <body>
-<form method="post" action="{% url 'kayscrochetapp:signin' %}">
+<form method="post" action="{% url 'kayscrochetapp:signout' %}">
     {% csrf_token %}
     <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">SIGNOUT</button>
 </form>

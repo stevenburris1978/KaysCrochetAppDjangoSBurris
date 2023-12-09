@@ -40,13 +40,18 @@
                         {% else %}
                         <!-- User is not authenticated -->
                         <div class="d-flex justify-content-end">
-                            <a href="{% url 'kayscrochetapp:signin' %}">Sign In</a> | <a href="{% url 'kayscrochetapp:signup' %}">Sign Up</a>
+                            <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">HOME</button>
+                            <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">SIGN IN</button>
+                            <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
                         </div>
+                            <p class="ms-1">Welcome!</p>
                         {% endif %}
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="ms-1">
-                            <p class="m-0 me-2" style="text-transform: uppercase;">Welcome, {{ user.username }}!</p>
+                            {% if user.is_authenticated %}
+                            <p class="m-0 me-2" style="text-transform: uppercase;">Welcome {{ user.username }}!</p>
+                            {% endif %}
                         </div>
                         <div class="ms-1">
                         {% if user.is_superuser %}
@@ -76,7 +81,7 @@
                 <div class="modal-body">
                     <!-- Help Content -->
                     <h3>Add to Cart:</h3>
-                    <p>Click the item title at HOME to see its details, then add to cart.</p>
+                    <p>Sign in and click the item title at HOME to see its details, then add to cart.</p>
                     <h3>Contact Kay's Crochet:</h3>
                     <p>Click the Instagram and TikTok icons below to contact Kay's Crochet.</p>
                     <h5>Email:</h5>
@@ -90,11 +95,11 @@
     </div>
 
     <!-- Main Content Section -->
-    {% if user.is_authenticated %}
+
     <main class="flex-grow-1 py-3">
         {% block content %}{% endblock %}
     </main>
-    {% endif %}
+
 
     <!-- Footer Section -->
     <footer class="py-3 sticky-bottom bg-danger-subtle text-center justify-content-center">

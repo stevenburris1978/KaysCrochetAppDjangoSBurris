@@ -35,7 +35,15 @@
                         <p>{{ item.description }}</p>
                         <div class="d-flex justify-content-left align-items-center">
                             <div>
-                               <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark"><i class="fa fa-heart fa-2x" style="color: red;"></i></a>
+                                {% if user.is_authenticated %}
+                                    <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark">
+                                        <i class="fa fa-heart fa-2x" style="color: red;"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="like-icon" data-bs-toggle="modal" data-bs-target="#loginModal" title="Must be logged in to like">
+                                        <i class="fa fa-heart fa-2x" style="color: red; cursor: pointer;"></i>
+                                    </span>
+                                {% endif %}
                             </div>
                             <div>
                                 {% if item.no_of_likes == 0 %}
@@ -45,6 +53,23 @@
                                 {% else %}
                                 <p>'s {{item.no_of_likes}}</p>
                                 {% endif %}
+                            </div>
+                        </div>
+                        <!-- Modal for login message -->
+                        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="loginModalLabel">TO LIKE CLICK SIGN IN OR SIGN UP</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">SIGN IN</button>
+                                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Click outside the box to go back without sign in</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </fieldset>
@@ -78,6 +103,19 @@
             });
         });
     });
+</script>
+<script>
+// Add click event listener to the like icon
+document.addEventListener('DOMContentLoaded', function() {
+    var likeIcon = document.querySelector('.like-icon');
+    if (likeIcon) {
+        likeIcon.addEventListener('click', function() {
+            // Trigger the modal display
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        });
+    }
+});
 </script>
 
 {% endblock %}
