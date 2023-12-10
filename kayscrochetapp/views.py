@@ -105,38 +105,33 @@ def signout(request):
 def add_to_cart(request, pk):
     item = get_object_or_404(Item, pk=pk)
 
-    if request.method == 'POST':
-        form = AddToCartForm(request.POST)
-        try:
-            if form.is_valid():
-                quantity = form.cleaned_data['quantity']
+    # Always set quantity to 1
+    quantity = 1
 
-                # Retrieve or initialize the cart dictionary from the session
-                cart = request.session.get('kayscrochetapp:cart', {})
+    # Retrieve or initialize the cart dictionary from the session
+    cart = request.session.get('kayscrochetapp:cart', {})
 
-                # Check if the item is already in the cart
-                if item.pk in cart:
-                    # Update the quantity for the existing item
-                    cart[item.pk]['quantity'] += quantity
-                    # Update the total_price for the existing item
-                    cart[item.pk]['total_price'] = str(Decimal(cart[item.pk]['price']) * Decimal(cart[item.pk]['quantity']))
-                else:
-                    # Add a new entry for the item in the cart
-                    cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)), }
+    try:
+        # Check if the item is already in the cart
+        if item.pk in cart:
+            # Update the quantity for the existing item
+            cart[item.pk]['quantity'] += quantity
+            # Update the total_price for the existing item
+            cart[item.pk]['total_price'] = str(Decimal(cart[item.pk]['price']) * Decimal(cart[item.pk]['quantity']))
+        else:
+            # Add a new entry for the item in the cart
+            cart[item.pk] = {'quantity': quantity, 'price': str(item.price), 'total_price': str(Decimal(item.price) * Decimal(quantity)), }
 
-                # Save the updated cart back to the session
-                request.session['kayscrochetapp:cart'] = cart
+        # Save the updated cart back to the session
+        request.session['kayscrochetapp:cart'] = cart
 
-                messages.success(request, f"{quantity} {item.item_title}(s) added to your cart.")
-                return redirect('kayscrochetapp:cart')  # Redirect to the cart page after adding the item
-        except Exception as e:
-            # Handle the exception here, e.g., log the error
-            print(f"Error adding item to cart: {e}")
-            messages.error(request, 'An error occurred while processing your request.')
-    else:
-        form = AddToCartForm()
-
-    return render(request, 'kayscrochetapp/detail.html', {'item': item, 'form': form})
+        messages.success(request, f"{quantity} {item.item_title}(s) added to your cart.")
+        return redirect('kayscrochetapp:cart')  # Redirect to the cart page after adding the item
+    except Exception as e:
+        # Handle the exception here, e.g., log the error
+        print(f"Error adding item to cart: {e}")
+        messages.error(request, 'An error occurred while processing your request.')
+        return redirect('kayscrochetapp:cart')  # Redirect to the cart page with an error message
 
 
 @login_required(login_url='kayscrochetapp:signin')

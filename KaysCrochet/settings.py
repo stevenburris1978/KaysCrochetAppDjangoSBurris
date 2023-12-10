@@ -92,6 +92,7 @@ else:
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = None
 
 
 # Password validation
