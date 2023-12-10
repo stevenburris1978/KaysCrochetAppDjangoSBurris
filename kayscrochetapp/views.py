@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
 from django.views.generic import TemplateView
@@ -70,7 +70,7 @@ def like(request, item_id):
         return HttpResponseRedirect(reverse("kayscrochetapp:results", args=(item.id,)))
 
 
-@csrf_protect
+@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -83,7 +83,7 @@ def signup(request):
     return render(request, 'kayscrochetapp/signup.html', {'form': form})
 
 
-@csrf_protect
+@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
@@ -99,7 +99,7 @@ def signin(request):
     return render(request, 'kayscrochetapp/signin.html', {'form': form})
 
 
-@csrf_protect
+@csrf_exempt
 def signout(request):
     logout(request)
     return redirect('kayscrochetapp:index')
