@@ -50,11 +50,12 @@ button {
     margin: .5rem;
     border-radius: 0.3125rem;
     border: none;
-    height: 1.2rem;
+    height: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: lavenderblush;
+    color: black;
 }
 
 .button:hover {
@@ -63,9 +64,8 @@ button {
 
 input {
     margin: .5rem;
-    border-radius: 0.3125rem;
+    border-radius: 0.5rem;
     border: none;
-    height: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
