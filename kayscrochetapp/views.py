@@ -70,6 +70,7 @@ def like(request, item_id):
         return HttpResponseRedirect(reverse("kayscrochetapp:results", args=(item.id,)))
 
 
+@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -82,6 +83,7 @@ def signup(request):
     return render(request, 'kayscrochetapp/signup.html', {'form': form})
 
 
+@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
@@ -97,6 +99,7 @@ def signin(request):
     return render(request, 'kayscrochetapp/signin.html', {'form': form})
 
 
+@csrf_exempt
 def signout(request):
     logout(request)
     return redirect(reverse('kayscrochetapp:index'))
