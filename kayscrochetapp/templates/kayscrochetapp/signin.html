@@ -60,13 +60,14 @@
 
         // Check if the error is an HTML response (not JSON)
         if (error instanceof Error && error.message.startsWith('<')) {
-            // Handle the HTML error response (e.g., display an alert)
+            // Log the HTML content for further inspection
             console.error('HTML error response:', error.message);
         } else {
             // Handle other errors (e.g., network error)
             console.error('Other error:', error.message);
         }
     });
+
 }
 
     </script>
