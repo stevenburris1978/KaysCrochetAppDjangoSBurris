@@ -19,7 +19,7 @@
         </form>
     </div>
     <script>
-        function submitForm() {
+    function submitForm() {
     // Include CSRF token in headers
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
@@ -57,7 +57,15 @@
     .catch(error => {
         // This catch block will catch errors thrown in the promise chain
         console.error('Error:', error);
-        // You can handle the error here, for example, display an alert or console log the error message
+
+        // Check if the error is an HTML response (not JSON)
+        if (error instanceof Error && error.message.startsWith('<')) {
+            // Handle the HTML error response (e.g., display an alert)
+            console.error('HTML error response:', error.message);
+        } else {
+            // Handle other errors (e.g., network error)
+            console.error('Other error:', error.message);
+        }
     });
 }
 
