@@ -50,7 +50,7 @@ ROOT_URLCONF = 'KaysCrochet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': []
+        'DIRS': [os.path.join(PROJECT_ROOT, 'templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -148,7 +148,7 @@ AUTH_USER_MODEL = 'auth.User'
 # Use the production static files directory
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'kayscrochetapp/static')]
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'kayscrochetapp', 'static')]
 
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
