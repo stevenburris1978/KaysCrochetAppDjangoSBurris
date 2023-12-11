@@ -70,20 +70,18 @@ def like(request, item_id):
         return HttpResponseRedirect(reverse("kayscrochetapp:results", args=(item.id,)))
 
 
-@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('kayscrochetapp:index')
+            return redirect(reverse('kayscrochetapp:index'))
     else:
         form = SignUpForm()
     return render(request, 'kayscrochetapp/signup.html', {'form': form})
 
 
-@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
@@ -93,16 +91,15 @@ def signin(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('kayscrochetapp:index')
+                return redirect(reverse('kayscrochetapp:index'))
     else:
         form = SignInForm()
     return render(request, 'kayscrochetapp/signin.html', {'form': form})
 
 
-@csrf_exempt
 def signout(request):
     logout(request)
-    return redirect('kayscrochetapp:index')
+    return redirect(reverse('kayscrochetapp:index'))
 
 
 def add_to_cart(request, pk):

@@ -8,6 +8,7 @@
             <fieldset>
                 <legend>SIGN UP FOR KAY'S CROCHET:</legend>
                 {% csrf_token %}
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 {{ form.as_p }}
                 <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">Sign Up</button>
                 <p>Click Sign In if You Have Already Created an Account</p>
