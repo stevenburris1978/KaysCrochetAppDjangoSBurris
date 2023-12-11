@@ -91,10 +91,11 @@ def signin(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect(reverse('kayscrochetapp:index'))
+                return JsonResponse({'success': True, 'redirect_url': reverse('kayscrochetapp:index')})
     else:
         form = SignInForm()
     return render(request, 'kayscrochetapp/signin.html', {'form': form})
+
 
 
 def signout(request):
