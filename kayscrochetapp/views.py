@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
 from django.views.generic import TemplateView
@@ -91,11 +91,10 @@ def signin(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return JsonResponse({'success': True, 'redirect_url': reverse('kayscrochetapp:index')})
+                return redirect(reverse('kayscrochetapp:index'))
     else:
         form = SignInForm()
     return render(request, 'kayscrochetapp/signin.html', {'form': form})
-
 
 
 def signout(request):

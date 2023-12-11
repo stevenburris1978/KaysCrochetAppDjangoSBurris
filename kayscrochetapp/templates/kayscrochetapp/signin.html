@@ -4,13 +4,13 @@
 
 {% block content %}
     <div class="flex-grow-1">
-        <form method="post" id="signin-form">
+        <form method="post">
             <fieldset>
                 <legend>SIGN IN TO KAY'S CROCHET:</legend>
                 {% csrf_token %}
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 {{ form.as_p }}
-                <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="button" onclick="submitForm()">SIGN IN</button>
+                <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">SIGN IN</button>
                 <p>Create an Account:</p>
                 <div>
                     <button type="button" class="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
@@ -18,61 +18,4 @@
             </fieldset>
         </form>
     </div>
-    <script>
-function submitForm() {
-    // Include CSRF token in headers
-    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-    fetch('{% url 'kayscrochetapp:signin' %}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-        body: JSON.stringify({
-            username: document.getElementById('id_username').value,
-            password: document.getElementById('id_password').value,
-        }),
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            // If the response is not okay, return the entire response (HTML page)
-            return response.text().then(html => {
-                throw new Error(html);
-            });
-        }
-    })
-    .then(data => {
-        // Check for success in the response
-        if (data.success) {
-            // Handle the successful login, e.g., redirect
-            window.location.href = data.redirect_url;
-        } else {
-            // Handle unsuccessful login, display an error message, etc.
-            console.error('Login failed');
-        }
-    })
-    .catch(error => {
-        // This catch block will catch errors thrown in the promise chain
-        console.error('Error:', error);
-
-        // Check if the error is an HTML response (not JSON)
-        if (error instanceof Error && error.message.startsWith('<')) {
-            // Log the HTML content for further inspection
-            console.error('HTML error response:', error.message);
-
-            // You might want to display an alert or handle the HTML error response differently
-            // For example, show an error message on the page
-            const errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.textContent = 'Error signing in. Please check your credentials and try again.';
-        } else {
-            // Handle other errors (e.g., network error)
-            console.error('Other error:', error.message);
-        }
-    });
-}
-
-    </script>
 {% endblock %}
