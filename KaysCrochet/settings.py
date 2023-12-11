@@ -13,17 +13,17 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import django_heroku
 
 # Load environment variables from .env file
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = True
-
-ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -34,19 +34,20 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'storages',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'KaysCrochet.urls'
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'KaysCrochet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': []
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -70,24 +71,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 
-# Determine if the application is running on Heroku
-ON_HEROKU = os.environ.get('ON_HEROKU', None)
-
-if ON_HEROKU:
-    # Use the Heroku database configuration
-    DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
-else:
-    # Use the local SQLite database configuration
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}
 
 SECURE_SSL_REDIRECT = True
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -128,16 +119,16 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
+# Change 'default' database configuration with $DATABASE_URL.
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-STATIC_URL = '/static/'
-
-# Static files (CSS, JavaScript, images)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+ALLOWED_HOSTS = ['*']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -159,17 +150,15 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AUTH_USER_MODEL = 'auth.User'
 
-if ON_HEROKU:
-    # Use the production static files directory
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-else:
-    # Use the local static files directory
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_local')
+# Use the production static files directory
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'kayscrochetapp/static')]
 
 STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+# Static files (CSS, JavaScript, images)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 
@@ -184,3 +173,6 @@ EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', 'True').lower() == 'true'
 # Set SMTP username and password
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

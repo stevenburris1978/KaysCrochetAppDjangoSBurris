@@ -30,8 +30,7 @@ DJANGO_EMAIL_HOST_PASSWORD=
 DJANGO_EMAIL_PORT=
 DJANGO_EMAIL_USE_TLS=
 AWS_STORAGE_BUCKET_NAME=
-AWS_S3_REGION_NAME= 
-DEBUG=False
+AWS_S3_REGION_NAME=
 # How to set up database
 (this will create any SQL entries that need to go into the database)
 ```
