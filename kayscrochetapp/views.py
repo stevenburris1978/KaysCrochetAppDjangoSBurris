@@ -219,7 +219,6 @@ ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000',
 logger = logging.getLogger(__name__)
 
 
-@csrf_exempt
 @require_POST
 def create_payment_intent(request):
     try:
