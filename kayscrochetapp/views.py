@@ -82,7 +82,6 @@ def signup(request):
     return render(request, 'kayscrochetapp/signup.html', {'form': form})
 
 
-@csrf_protect
 @require_POST
 def signin(request):
     if request.method == 'POST':
