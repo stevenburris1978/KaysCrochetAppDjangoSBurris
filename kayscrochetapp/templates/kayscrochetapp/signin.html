@@ -19,7 +19,7 @@
         </form>
     </div>
     <script>
-    function submitForm() {
+function submitForm() {
     // Include CSRF token in headers
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
@@ -62,12 +62,16 @@
         if (error instanceof Error && error.message.startsWith('<')) {
             // Log the HTML content for further inspection
             console.error('HTML error response:', error.message);
+
+            // You might want to display an alert or handle the HTML error response differently
+            // For example, show an error message on the page
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.textContent = 'Error signing in. Please check your credentials and try again.';
         } else {
             // Handle other errors (e.g., network error)
             console.error('Other error:', error.message);
         }
     });
-
 }
 
     </script>
