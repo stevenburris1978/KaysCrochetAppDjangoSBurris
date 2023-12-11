@@ -4,13 +4,13 @@
 
 {% block content %}
     <div class="flex-grow-1">
-        <form method="post">
+        <form method="post" id="signin-form">
             <fieldset>
                 <legend>SIGN IN TO KAY'S CROCHET:</legend>
                 {% csrf_token %}
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 {{ form.as_p }}
-                <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">SIGN IN</button>
+                <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="button" onclick="submitForm()">SIGN IN</button>
                 <p>Create an Account:</p>
                 <div>
                     <button type="button" class="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
@@ -18,4 +18,28 @@
             </fieldset>
         </form>
     </div>
+    <script>
+        function submitForm() {
+            // Include CSRF token in headers
+            const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+            fetch('{% url 'kayscrochetapp:signin' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({
+                    username: document.getElementById('id_username').value,
+                    password: document.getElementById('id_password').value,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response as needed
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 {% endblock %}
