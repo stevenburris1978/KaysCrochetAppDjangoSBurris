@@ -85,10 +85,7 @@ else:
         }
     }
 
-if ON_HEROKU:
-    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True').lower() == 'True'
-else:
-    SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
