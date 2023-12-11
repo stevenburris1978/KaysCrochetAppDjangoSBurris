@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -90,10 +90,17 @@ if ON_HEROKU:
 else:
     SECURE_SSL_REDIRECT = False
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = None
-SESSION_COOKIE_SAMESITE = None
+
+SECURE_BROWSER_XSS_FILTER = True
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+
 
 
 # Password validation
