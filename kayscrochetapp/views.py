@@ -82,7 +82,6 @@ def signup(request):
     return render(request, 'kayscrochetapp/signup.html', {'form': form})
 
 
-@require_POST
 def signin(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
