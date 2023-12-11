@@ -20,26 +20,46 @@
     </div>
     <script>
         function submitForm() {
-            // Include CSRF token in headers
-            const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    // Include CSRF token in headers
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
-            fetch('{% url 'kayscrochetapp:signin' %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                },
-                body: JSON.stringify({
-                    username: document.getElementById('id_username').value,
-                    password: document.getElementById('id_password').value,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response as needed
-                console.log(data);
-            })
-            .catch(error => console.error('Error:', error));
+    fetch('{% url 'kayscrochetapp:signin' %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({
+            username: document.getElementById('id_username').value,
+            password: document.getElementById('id_password').value,
+        }),
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            // If the response is not okay, return the entire response (HTML page)
+            return response.text().then(html => {
+                throw new Error(html);
+            });
         }
+    })
+    .then(data => {
+        // Check for success in the response
+        if (data.success) {
+            // Handle the successful login, e.g., redirect
+            window.location.href = data.redirect_url;
+        } else {
+            // Handle unsuccessful login, display an error message, etc.
+            console.error('Login failed');
+        }
+    })
+    .catch(error => {
+        // This catch block will catch errors thrown in the promise chain
+        console.error('Error:', error);
+        // You can handle the error here, for example, display an alert or console log the error message
+    });
+}
+
     </script>
 {% endblock %}
