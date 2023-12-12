@@ -73,7 +73,13 @@ WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 
 DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 
-SECURE_SSL_REDIRECT = True
+IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
+
+# Set SECURE_SSL_REDIRECT based on whether the app is running on Heroku
+if IS_HEROKU_APP:
+    SECURE_SSL_REDIRECT = True
+else:
+    SECURE_SSL_REDIRECT = False
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
