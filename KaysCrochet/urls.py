@@ -16,8 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+import logging
+from django.http import HttpResponseServerError
+
+# Create a logger for this module
+logger = logging.getLogger(__name__)
 
 urlpatterns = [
     path("", include("kayscrochetapp.urls")),
     path("admin/", admin.site.urls),
 ]
+
+
+def handler500(request, *args, **argv):
+    # Log an error if a 500 error occurs
+    logger.error("An error occurred: Internal Server Error")
+
+    # You can customize the log message and log level based on your needs.
+
+    # Return an error response or handle it as needed
+    return HttpResponseServerError("An error occurred. Please try again later.")

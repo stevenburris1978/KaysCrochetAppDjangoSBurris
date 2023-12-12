@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from django.views import generic
@@ -19,14 +19,34 @@ from .models import Choice, Item, LikeItem, Customerorder
 import stripe
 import logging
 
+# Define the logger
+logger = logging.getLogger(__name__)
+
 
 class IndexView(generic.ListView):
     template_name = "kayscrochetapp/index.html"
     context_object_name = "latest_item_list"
 
-    def get_queryset(self):
-        return Item.objects.order_by("-pub_date")[:100]
+    def dispatch(self, request, *args, **kwargs):
+        # Log that the IndexView is being accessed
+        logger.info("IndexView accessed.")
+        return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        # Render the template directly without a redirect
+        return render(request, self.template_name, {'latest_item_list': self.get_queryset()})
+
+    def get_queryset(self):
+        try:
+            queryset = Item.objects.order_by("-pub_date")[:100]
+            # Example log statement
+            logger.info("IndexView queryset retrieved successfully.")
+            return queryset
+        except Exception as e:
+            # Log the exception details
+            logger.error(f"Error retrieving queryset in IndexView: {e}")
+            # You might want to raise or handle the exception accordingly
+            raise
 
 class DetailView(generic.DetailView):
     model = Item
@@ -67,10 +87,6 @@ def like(request, item_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse("kayscrochetapp:results", args=(item.id,)))
-
-
-# Define the logger
-logger = logging.getLogger(__name__)
 
 
 def signup(request):
