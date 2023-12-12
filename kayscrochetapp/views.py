@@ -32,10 +32,6 @@ class IndexView(generic.ListView):
         logger.info("IndexView accessed.")
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        # Render the template directly without a redirect
-        return render(request, self.template_name, {'latest_item_list': self.get_queryset()})
-
     def get_queryset(self):
         try:
             queryset = Item.objects.order_by("-pub_date")[:100]
