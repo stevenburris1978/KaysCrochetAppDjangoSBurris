@@ -180,11 +180,25 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': LOGGING_DIR / 'error.log',
         },
+        'info_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOGGING_DIR / 'info.log',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'myapp': {
+            'handlers': ['info_file'],
+            'level': 'INFO',
             'propagate': True,
         },
     },

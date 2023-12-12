@@ -6,11 +6,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db import transaction
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseServerError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views import generic
 from django.views.generic import TemplateView
@@ -70,16 +69,28 @@ def like(request, item_id):
         return HttpResponseRedirect(reverse("kayscrochetapp:results", args=(item.id,)))
 
 
+# Define the logger
+logger = logging.getLogger(__name__)
+
+
 def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect(reverse('kayscrochetapp:index'))
-    else:
-        form = SignUpForm()
-    return render(request, 'kayscrochetapp/signup.html', {'form': form})
+    try:
+        if request.method == 'POST':
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                return redirect(reverse('kayscrochetapp:index'))
+        else:
+            form = SignUpForm()
+
+        return render(request, 'kayscrochetapp/signup.html', {'form': form})
+    except Exception as e:
+        # Log an error if an exception occurs
+        logger.error("An error occurred in the signup view: %s", str(e))
+
+        # Return an error response or handle it as needed
+        return HttpResponseServerError("An error occurred during signup.")
 
 
 def signin(request):
@@ -213,10 +224,7 @@ class CancelView(TemplateView):
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Define a list of allowed IP addresses or domains
-ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000', 'kayscrochet.us']
-
-# Define the logger
-logger = logging.getLogger(__name__)
+ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000', 'kayscrochet.us', 'https://kayscrochetapp-e13180bf49a3.herokuapp.com/']
 
 
 @require_POST
