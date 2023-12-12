@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import logging
 
 # Load environment variables from .env file
 load_dotenv()
@@ -166,3 +167,25 @@ EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', 'True').lower() == 'true'
 # Set SMTP username and password
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
+
+LOGGING_DIR = BASE_DIR / 'logs'
+LOGGING_DIR.mkdir(exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': LOGGING_DIR / 'error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
