@@ -5,13 +5,13 @@ self.addEventListener('install', function (event) {
     caches.open(staticCacheName).then(function (cache) {
       return cache.addAll([
         '/',
-        '/kayscrochetapp/static/images/background.png',
-        '/kayscrochetapp/static/images/HaveAGoodDay.png',
-        '/kayscrochetapp/static/images/icon-192x192.png',
-        '/kayscrochetapp/static/images/icon-256x256.png',
-        '/kayscrochetapp/static/images/icon-384x384.png',
-        '/kayscrochetapp/static/images/icon-512x512.png',
-        '/kayscrochetapp/static/style.css',
+        '{% static "kayscrochetapp/images/background.png" %}',
+        '{% static "kayscrochetapp/images/HaveAGoodDay.png" %}',
+        '{% static "kayscrochetapp/images/icon-192x192.png" %}',
+        '{% static "kayscrochetapp/images/icon-256x256.png" %}',
+        '{% static "kayscrochetapp/images/icon-384x384.png" %}',
+        '{% static "kayscrochetapp/images/icon-512x512.png" %}',
+        '{% static "kayscrochetapp/style.css" %}',
       ]);
     }).catch(function (error) {
       console.error('Error during installation:', error);
@@ -32,7 +32,7 @@ self.addEventListener('fetch', function (event) {
       return;
     }
     // Handle other static assets explicitly
-    if (requestUrl.pathname.startsWith('/kayscrochetapp/static/')) {
+    if (requestUrl.pathname.startsWith('/static/')) {
       event.respondWith(
         caches.match(event.request).then(function (response) {
           return response || fetch(event.request);
