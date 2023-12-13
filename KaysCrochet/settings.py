@@ -23,7 +23,7 @@ PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'kayscrochetapp/static', 'servi
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
