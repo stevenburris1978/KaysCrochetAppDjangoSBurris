@@ -23,7 +23,7 @@ PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'kayscrochetapp/static', 'servi
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -109,9 +109,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
-SECURE_SSL_REDIRECT = True
+if IS_HEROKU_APP:
+    DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+else:
+    # Use the local SQLite database configuration
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+# Set SECURE_SSL_REDIRECT based on whether the app is running on Heroku
+if IS_HEROKU_APP:
+    SECURE_SSL_REDIRECT = True
+else:
+    SECURE_SSL_REDIRECT = False
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -123,6 +138,8 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CSRF_COOKIE_SAMESITE = 'Lax'
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -142,6 +159,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -152,6 +170,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
