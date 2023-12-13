@@ -253,7 +253,7 @@ PWA_CACHES = [
         'version': PWA_APP_VERSION,
         'urls': [
             '/',
-            '//static/',
+            '/static/',
             'https://s3.amazonaws.com/kayscrochetbucket/items_images/**',
         ],
         'patterns': [
