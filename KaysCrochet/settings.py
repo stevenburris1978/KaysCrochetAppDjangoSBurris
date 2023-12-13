@@ -212,7 +212,7 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        'src': 'kayscrochetapp/static/kayscrochetapp/images/icon-192x192.png',
+        'src': '/static/kayscrochetapp/images/icon-192x192.png',
         'sizes': '192x192',
         "type": "image/png"
     },
