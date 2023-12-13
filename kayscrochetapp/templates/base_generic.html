@@ -48,14 +48,30 @@
                             <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">SignIn</button>
                             <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SignUp</button>
                         </div>
-                            <p class="ms-1">Welcome!</p>
-                        {% endif %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="ms-1 align-items-center">
+                                <p class="ms-1" style="text-transform: uppercase;">Welcome!</p>
+                            </div>
+
+                            <!-- Install PWA button -->
+                            <button id="installButton" class="button align-items-center ms-1 text-center d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5rem; height: 1.6rem; border: 0.0625rem solid white; color: white; display: none;">
+                                InstallApp
+                            </button>
+                        </div>
+                    {% endif %}
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
-                        <div class="ms-1">
-                            {% if user.is_authenticated %}
-                            <p class="m-0 me-2" style="text-transform: uppercase;">Welcome {{ user.username }}!</p>
-                            {% endif %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="ms-1 align-items-center">
+                                {% if user.is_authenticated %}
+                                <p class="ms-1" style="text-transform: uppercase;">Welcome {{ user.username }}!</p>
+                            </div>
+
+                            <!-- Install PWA button for authenticated users -->
+                            <button id="installButton" class="button align-items-center ms-1 text-center d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5rem; height: 1.6rem; border: 0.0625rem solid white; color: white; display: none;">
+                                InstallApp
+                            </button>
+                                {% endif %}
                         </div>
                         <div class="ms-1">
                         {% if user.is_superuser %}
@@ -141,5 +157,40 @@
   const PWA_APP_START_URL = "{{ PWA_APP_START_URL }}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    let deferredInstallPrompt = null;
 
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('beforeinstallprompt', function (event) {
+            // Show the install button
+            document.getElementById('installButton').style.display = 'block';
+
+            // Prevent the default install prompt
+            event.preventDefault();
+
+            // Save the event for later use
+            deferredInstallPrompt = event;
+        });
+
+        // Install button click event
+        document.getElementById('installButton').addEventListener('click', function () {
+            // Prompt the user to install the app
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+
+                // Handle the user's choice
+                deferredInstallPrompt.userChoice.then(function (choiceResult) {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                    } else {
+                        console.log('User dismissed the A2HS prompt');
+                    }
+
+                    // Reset the deferred prompt variable
+                    deferredInstallPrompt = null;
+                });
+            }
+        });
+    }
+</script>
 {% block scripts %}{% endblock %}
