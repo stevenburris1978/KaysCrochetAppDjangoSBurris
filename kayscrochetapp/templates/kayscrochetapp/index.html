@@ -38,7 +38,7 @@
                         <div class="d-flex justify-content-left align-items-center">
                             <div>
                                 {% if user.is_authenticated %}
-                                    <a href="/like_item?item_id={{ item.id }}"  target="_blank" class="text-dark">
+                                    <a href="javascript:void(0);" class="like-icon text-dark" data-item-id="{{ item.id }}">
                                         <i class="fa fa-heart fa-2x" style="color: red;"></i>
                                     </a>
                                 {% else %}
@@ -49,11 +49,11 @@
                             </div>
                             <div>
                                 {% if item.no_of_likes == 0 %}
-                                <p>'s 0</p>
+                                    <p id="like-count-{{ item.id }}"> 's 0</p>
                                 {% elif item.no_of_likes == 1 %}
-                                <p>'s {{item.no_of_likes}}</p>
+                                    <p id="like-count-{{ item.id }}"> 's {{item.no_of_likes}}</p>
                                 {% else %}
-                                <p>'s {{item.no_of_likes}}</p>
+                                    <p id="like-count-{{ item.id }}"> 's {{item.no_of_likes}}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -107,18 +107,45 @@
     });
 </script>
 <script>
-// Add click event listener to the like icon
-document.addEventListener('DOMContentLoaded', function() {
-    var likeIcon = document.querySelector('.like-icon');
-    if (likeIcon) {
-        likeIcon.addEventListener('click', function() {
-            // Trigger the modal display
-            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-            loginModal.show();
+// Add click event listener to the like icon in index.html
+document.addEventListener('DOMContentLoaded', function () {
+    var likeIcons = document.querySelectorAll('.like-icon');
+    likeIcons.forEach(function (likeIcon) {
+        likeIcon.addEventListener('click', function () {
+            // Get the item ID from the data attribute
+            var itemId = likeIcon.dataset.itemId;
+
+            // Make an AJAX request to the like_item view
+            $.ajax({
+                type: 'GET',
+                url: '/like_item/?random=' + Math.random(),  // Adding random parameter to prevent caching
+                data: {
+                    'item_id': itemId,
+                },
+                success: function (data) {
+                    // Update the like count and 's on the client side
+                    var likeCountElement = document.querySelector('#like-count-' + itemId);
+
+                    // Check if likeCountElement exists
+                    if (likeCountElement) {
+                        likeCountElement.innerHTML = ' <p id="like-count-' + itemId + '"> \'s ' + data.no_of_likes + '</p>';
+
+                        // Log to verify the updated value
+                        console.log('Updated like count:', data.no_of_likes);
+
+                        // Force a DOM update
+                        likeCountElement.innerHTML = likeCountElement.innerHTML;
+                    } else {
+                        console.log('likeCountElement not found.');
+                    }
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
         });
-    }
+    });
 });
 </script>
-
 {% endblock %}
 

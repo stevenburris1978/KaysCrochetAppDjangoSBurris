@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 urlpatterns = [
     path("", include("kayscrochetapp.urls")),
     path("admin/", admin.site.urls),
+    path("", include("pwa.urls")),
 ]
 
 

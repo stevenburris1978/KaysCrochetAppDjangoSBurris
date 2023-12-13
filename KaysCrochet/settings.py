@@ -19,10 +19,11 @@ import logging
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'kayscrochetapp/static', 'serviceworker.js')
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -36,12 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'storages',
+    'pwa',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -49,6 +53,40 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    # Add the origins that you want to allow here
+    "https://www.kayscrochet.us",
+    "https://kayscrochetapp-e13180bf49a3.herokuapp.com",
+
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Service-Worker-Allowed',  # Add this line
+]
+
+CORS_EXPOSE_HEADERS = [
+    'Service-Worker-Allowed',
+]
+
 
 ROOT_URLCONF = 'KaysCrochet.urls'
 
@@ -71,9 +109,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'KaysCrochet.wsgi.application'
 
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
-
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
+
+if IS_HEROKU_APP:
+    DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+else:
+    # Use the local SQLite database configuration
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Set SECURE_SSL_REDIRECT based on whether the app is running on Heroku
 if IS_HEROKU_APP:
@@ -152,6 +199,67 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AUTH_USER_MODEL = 'auth.User'
+
+PWA_APP_VERSION = '1.0'
+PWA_APP_NAME = "Kay's Crochet"
+PWA_APP_DESCRIPTION = 'Crochet Sale'
+PWA_APP_THEME_COLOR = 'lavenderblush'
+PWA_APP_BACKGROUND_COLOR = 'lavender'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': 'static/kayscrochetapp/images/icon-192x192.png',
+        'sizes': '192x192'
+    },
+    {
+        "src": "static/kayscrochetapp/images/icon-256x256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+    },
+    {
+        "src": "static/kayscrochetapp/images/icon-384x384.png",
+        "sizes": "384x384",
+        "type": "image/png"
+    },
+    {
+        "src": "static/kayscrochetapp/images/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': 'static/kayscrochetapp/images/icon-160x160.png',
+        'sizes': '192x192'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': 'static/kayscrochetapp/images/icon-192x192.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_CACHES = [
+    {
+        'name': 'cache-1',
+        'timeout': 60 * 60 * 24 * 7,  # 1 week
+        'version': PWA_APP_VERSION,
+        'urls': [
+            '/',
+            '/kayscrochetapp/static/**',
+            'https://s3.amazonaws.com/your-bucket-name/items_images/**',
+        ],
+        'patterns': [
+            '^/.*$',
+        ],
+    },
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
 
 # Use the production static files directory
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'kayscrochetapp/static')]
