@@ -162,5 +162,5 @@ cython_debug/
 /kayscrochetapp/migrations/0001_initial.py
 staticfiles_local/
 /logs/
-/staticfiles/
+
 

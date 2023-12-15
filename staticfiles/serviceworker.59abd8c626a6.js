@@ -5,13 +5,13 @@ self.addEventListener('install', function (event) {
     caches.open(staticCacheName).then(function (cache) {
       return cache.addAll([
         '/',
-        'kayscrochetapp/static/kayscrochetapp/images/background.png',
-        'kayscrochetapp/static/kayscrochetapp/images/HaveAGoodDay.png',
-        'kayscrochetapp/static/kayscrochetapp/images/icon-192x192.png',
-        'kayscrochetapp/static/kayscrochetapp/images/icon-256x256.png',
-        'kayscrochetapp/static/kayscrochetapp/images/icon-384x384.png',
-        'kayscrochetapp/static/kayscrochetapp/images/icon-512x512.png',
-        'kayscrochetapp/static/kayscrochetapp/style.css',
+        '/kayscrochetapp/static/images/background.png',
+        '/kayscrochetapp/static/images/HaveAGoodDay.png',
+        '/kayscrochetapp/static/images/icon-192x192.png',
+        '/kayscrochetapp/static/images/icon-256x256.png',
+        '/kayscrochetapp/static/images/icon-384x384.png',
+        '/kayscrochetapp/static/images/icon-512x512.png',
+        '/kayscrochetapp/static/style.css',
       ]);
     }).catch(function (error) {
       console.error('Error during installation:', error);

@@ -212,34 +212,36 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        'src': 'static/kayscrochetapp/images/icon-192x192.png',
-        'sizes': '192x192'
+        'src': 'kayscrochetapp/static/kayscrochetapp/images/icon-192x192.png',
+        'sizes': '192x192',
+        'type': 'image/png'
     },
     {
-        "src": "static/kayscrochetapp/images/icon-256x256.png",
+        "src": "kayscrochetapp/static/kayscrochetapp/images/icon-256x256.png",
         "sizes": "256x256",
         "type": "image/png"
     },
     {
-        "src": "static/kayscrochetapp/images/icon-384x384.png",
+        "src": "kayscrochetapp/static/kayscrochetapp/images/icon-384x384.png",
         "sizes": "384x384",
         "type": "image/png"
     },
     {
-        "src": "static/kayscrochetapp/images/icon-512x512.png",
+        "src": "kayscrochetapp/static/kayscrochetapp/images/icon-512x512.png",
         "sizes": "512x512",
         "type": "image/png"
     }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': 'static/kayscrochetapp/images/icon-160x160.png',
-        'sizes': '192x192'
+        'src': 'kayscrochetapp/static/kayscrochetapp/images/icon-160x160.png',
+        'sizes': '192x192',
+        'type': 'image/png'
     }
 ]
 PWA_APP_SPLASH_SCREEN = [
     {
-        'src': 'static/kayscrochetapp/images/icon-192x192.png',
+        'src': 'kayscrochetapp/static/kayscrochetapp/images/icon-192x192.png',
         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
     }
 ]
