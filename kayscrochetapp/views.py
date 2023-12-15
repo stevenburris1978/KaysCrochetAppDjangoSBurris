@@ -237,7 +237,7 @@ class CancelView(TemplateView):
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Define a list of allowed IP addresses or domains
-ALLOWED_ADDRESSES = ['127.0.0.1', '::1', 'www.kayscrochet.us', '127.0.0.1:8000', 'kayscrochet.us', 'https://kayscrochetapp-e13180bf49a3.herokuapp.com/']
+ALLOWED_ADDRESSES = [ 'https://www.kayscrochet.us', 'www.kayscrochet.us', 'kayscrochet.us', 'https://kayscrochetapp-e13180bf49a3.herokuapp.com/']
 
 
 @require_POST
@@ -340,7 +340,10 @@ def clear_cart(request):
                 print(f"Sending email to user: {user_email}")
 
                 subject = 'Order Confirmation'
-                message = f'Thank you for your order. Your invoice details are:\n\nFull Name: {full_name}\nStreet: {street}\nCity: {city}\nState: {state}\nZIP Code: {zip_code}\nTotal Price: ${total_price:.2f}\nItems: {", ".join(item_titles)}\nShipping is included.\nPrice does not include sales or use tax that you may need to pay in your state.'
+                message = (f'Thank you for your order. Your invoice details are:\n\nFull Name: {full_name}\n'
+                           f'Street: {street}\nCity: {city}\nState: {state}\nZIP Code: {zip_code}\n'
+                           f'Total Price: ${total_price:.2f}\nItems: {", ".join(item_titles)}\nShipping is included.\n'
+                           f'Price does not include sales or use tax that you may need to pay in your state.')
                 from_email = 'kayscrochetus@gmail.com'
                 recipient_list = [user_email]
                 # Check if there's an error when sending the email
@@ -359,7 +362,8 @@ def clear_cart(request):
         # Send email to kayscrochetus@gmail.com
         admin_email = 'kayscrochetus@gmail.com'
         subject = 'New Order Received'
-        message = f'New order details:\n\nFull Name: {full_name}\nStreet: {street}\nCity: {city}\nState: {state}\nZIP Code: {zip_code}\nTotal Price: ${total_price:.2f}\nItems: {", ".join(item_titles)}'
+        message = (f'New order details:\n\nFull Name: {full_name}\nStreet: {street}\nCity: {city}\nState: {state}\n'
+                   f'ZIP Code: {zip_code}\nTotal Price: ${total_price:.2f}\nItems: {", ".join(item_titles)}')
         from_email = 'kayscrochetus@gmail.com'
         recipient_list = [admin_email]
         send_mail(subject, message, from_email, recipient_list)

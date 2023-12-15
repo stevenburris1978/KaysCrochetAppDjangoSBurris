@@ -59,7 +59,8 @@
                 <input type="hidden" name="total_price" value="{{ items|sum_attribute:'total_price'|floatformat:2 }}">
                 <div id="card-element"></div>
                 <div class="d-flex justify-content-left align-items-center">
-                    <button id="submit-button" type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">PAY NOW</button>
+                    <button id="submit-button" type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                            onmouseout="this.style.boxShadow='none'">PAY NOW</button>
                     <p style="margin: 1rem">Payment Secured by <a href="https://www.stripe.com" target="_blank">Stripe</a></p>
                 </div>
                 <p>An invoice will be emailed to you upon payment.</p>
@@ -74,7 +75,8 @@
       {% endif %}
     </fieldset>
 </form>
-<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
+<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"
+        class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
 
 <!-- Include Stripe.js script -->
 <script src="https://js.stripe.com/v3/"></script>

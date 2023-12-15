@@ -66,8 +66,11 @@
             {% endfor %}
         {% endif %}
         {% if item.choice_set.count > 0 %}
-            <input type="submit" value="VOTE FOR STYLES" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
-            <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button" onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">SEE STYLE VOTES</button>
+            <input type="submit" value="VOTE FOR STYLES" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                   onmouseout="this.style.boxShadow='none'" style="display: flex; justify-content: center; align-items: center; vertical-align: middle; line-height: 0;">
+            <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                    onmouseout="this.style.boxShadow='none'" class="button"
+                    onclick="window.location.href = '{% url 'kayscrochetapp:results' item.id%}'">SEE STYLE VOTES</button>
         {% endif %}
     </fieldset>
 </form>

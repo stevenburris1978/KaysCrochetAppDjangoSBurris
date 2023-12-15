@@ -14,7 +14,9 @@
             <li>
                 <form>
                     <fieldset>
-                        <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a style="text-decoration: none; text-transform: uppercase;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
+                        <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                                            onmouseout="this.style.boxShadow='none'">
+                            <a style="text-decoration: none; text-transform: uppercase;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
                         <div style="padding: .5rem">
                             {% if item.image %}
                                 <img src="{{ item.image.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
@@ -65,8 +67,10 @@
                                         <h5 class="modal-title" id="loginModalLabel">TO LIKE CLICK SIGN IN OR SIGN UP</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">SIGN IN</button>
-                                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
+                                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                                                onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">SIGN IN</button>
+                                        <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                                                onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
                                     </div>
                                     <div class="modal-body">
                                         <p>Click outside the box to go back without sign in</p>
