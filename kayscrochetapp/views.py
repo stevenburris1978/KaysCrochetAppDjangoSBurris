@@ -115,6 +115,8 @@ def signin(request):
             if user:
                 login(request, user)
                 return redirect(reverse('kayscrochetapp:index'))
+            else:
+                messages.error(request, 'Wrong username or password entered.')
     else:
         form = SignInForm()
     return render(request, 'kayscrochetapp/signin.html', {'form': form})
