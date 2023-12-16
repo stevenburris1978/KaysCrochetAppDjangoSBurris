@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 
+# table to add item and its details
 class Item(models.Model):
     item_title = models.CharField(max_length=200)
     description = models.TextField()
@@ -18,6 +19,7 @@ class Item(models.Model):
     def __str__(self):
         return self.item_title
 
+    # order by published recently
     @admin.display(
         boolean=True,
         ordering="pub_date",
@@ -34,6 +36,7 @@ class Item(models.Model):
         return one_day_ago <= self.pub_date <= now
 
 
+# table to add choices to vote on of future crocheted items
 class Choice(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
@@ -43,6 +46,7 @@ class Choice(models.Model):
         return self.choice_text
 
 
+# table to store likes
 class LikeItem(models.Model):
     item_id = models.CharField(max_length=500)
     username = models.CharField(max_length=100)
@@ -51,6 +55,7 @@ class LikeItem(models.Model):
         return self.username
 
 
+# table to store customer order info
 class Customerorder(models.Model):
     full_name = models.CharField(max_length=100)
     street = models.CharField(max_length=255)
