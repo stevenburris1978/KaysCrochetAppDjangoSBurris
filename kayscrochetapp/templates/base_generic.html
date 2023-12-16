@@ -82,18 +82,23 @@
     </header>
 
     <div class="button-container d-flex fixed-top ms-5 text-center justify-content-center" style="left: 5%">
-    <!-- Help Modal Button -->
-    <button type="button" class="button bg-danger-subtle" data-bs-toggle="modal"
-        data-bs-target="#exampleModal" style="width: 3.5rem; border: 0.0625rem solid white;
-        color: white; height: 1.6rem;">
-        HELP?
-    </button>
-        <!-- Install PWA button for authenticated users -->
-    <button id="installButton" class="button align-items-center ms-1 text-center
-    d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5rem;
-    height: 1.6rem; border: 0.0625rem solid white; color: white; display: none;">
-        InstallApp
-    </button>
+        <!-- Help Modal Button -->
+        <button type="button" class="button bg-danger-subtle" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" style="width: 3.5rem; border: 0.0625rem solid white;
+            color: white; height: 1.6rem;">
+            HELP?
+        </button>
+            <!-- Install PWA button for authenticated users -->
+        <button id="installButton" class="button align-items-center ms-1 text-center
+            d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5rem;
+            height: 1.6rem; border: 0.0625rem solid white; color: white; display: none;">
+            InstallApp
+        </button>
+        <button id="installSafariButton" class="button align-items-center ms-1 text-center
+            d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5.5rem;
+            height: 1.6rem; border: 0.0625rem solid white; color: white;">
+            InstallSafari
+        </button>
     </div>
 
     <!-- Help Modal -->
@@ -203,4 +208,29 @@
         });
     }
 </script>
+<script>
+    document.getElementById('installSafariButton').addEventListener('click', function () {
+        if ('standalone' in window.navigator && window.navigator.standalone) {
+            // If the app is already installed on iOS
+            alert('The app is already installed on your home screen.');
+        } else if (window.navigator.userAgent.toLowerCase().includes('safari') && !window.navigator.standalone) {
+            // If the browser is Safari, show instructions to add to home screen
+            alert('To install the app, click the Share button at the bottom of the Safari browser, then choose "Add to Home Screen".');
+        } else {
+            // For other browsers or platforms, prompt the user to use the standard install button
+            deferredInstallPrompt.prompt();
+            deferredInstallPrompt.userChoice.then(function (choiceResult) {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt');
+                } else {
+                    console.log('User dismissed the A2HS prompt');
+                }
+
+                // Reset the deferred prompt variable
+                deferredInstallPrompt = null;
+            });
+        }
+    });
+</script>
+
 {% block scripts %}{% endblock %}
