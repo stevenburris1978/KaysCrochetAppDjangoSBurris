@@ -15,6 +15,11 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'kayscrochetapp/style.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'kayscrochetapp/images/favicon.ico' %}">
+    <style>
+        #search::placeholder {
+            color: hsl(270, 50%, 60%);
+        }
+    </style>
 
     {% block styles %}{% endblock %}
 </head>
@@ -77,7 +82,8 @@
                         <div class="ms-1">
                         {% if user.is_superuser %}
                             <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
-                            onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'admin:index' %}'" style="color: hsl(270, 50%, 60%);">ADMIN</button>
+                            onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'admin:index' %}'"
+                                    style="color: hsl(270, 50%, 60%);">ADMIN</button>
                         {% endif %}
                         </div>
                     </div>
@@ -105,10 +111,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">HELP</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: hsl(270, 50%, 60%);">HELP</h1>
+                    <button type="button" class="button" data-bs-dismiss="modal" aria-label="Close" style="color: hsl(270, 50%, 60%);">X</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="color: hsl(270, 50%, 60%);">
                     <!-- Help Content -->
                     <h3>Add to Cart:</h3>
                     <p>Sign in and click the item title at HOME to see its details, then add to cart.</p>
@@ -121,35 +127,36 @@
                             Click share and then add to home screen for Safari.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
+                    <button type="button" class="button" data-bs-dismiss="modal" style="color: hsl(270, 50%, 60%);">CLOSE</button>
                 </div>
             </div>
         </div>
     </div>
-        <!-- Help Modal -->
+        <!-- InstallApp Modal -->
     <div class="modal" id="exampleModalTwo" tabindex="-1" aria-labelledby="exampleModalLabelTwo" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabelTwo">To Install Kay's Crochet App Click Here:</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabelTwo" style="color: hsl(270, 50%, 60%);">
+                        To Install Kay's Crochet App click below:</h1>
+                    <button type="button" class="button" data-bs-dismiss="modal" aria-label="Close" style="color: hsl(270, 50%, 60%);">X</button>
                 </div>
-                <div class="modal-body ">
-                    <!-- Help Content -->
+                <div class="modal-body " style="color: hsl(270, 50%, 60%);">
+                    <!-- Install app Content -->
                         <!-- Install PWA buttons-->
                     <button id="installButton" class="button align-items-center ms-1 text-center
                         d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 20rem;
-                        height: 1.6rem; border: 0.0625rem solid white; color: black; display: none;">
+                        height: 1.6rem; border: 0.0625rem solid white; display: none; color: hsl(270, 50%, 60%);">
                         Install App On Chrome And Edge
                     </button>
                     <button id="installSafariButton" class="button align-items-center ms-1 text-center
                         d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 20rem;
-                        height: 1.6rem; border: 0.0625rem solid white; color: black;">
+                        height: 1.6rem; border: 0.0625rem solid white; color: hsl(270, 50%, 60%);">
                         Install App On Safari
                     </button>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
+                    <button type="button" class="button" data-bs-dismiss="modal" style="color: hsl(270, 50%, 60%);">CLOSE</button>
                 </div>
             </div>
         </div>

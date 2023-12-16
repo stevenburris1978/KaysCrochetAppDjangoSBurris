@@ -9,7 +9,7 @@
           -webkit-background-clip: text;
           background-clip: text;">All Items For Sale:</h2>
         <!-- Search form -->
-    <input style="padding: .5rem; margin-left: 3rem; height: 1.5rem" type="text" id="search" placeholder="Search by item title">
+    <input style="padding: .5rem; margin-left: 3rem; height: 1.6rem;" type="text" id="search" placeholder="Search by item title">
 
     {% if latest_item_list %}
         <ul>
@@ -80,12 +80,14 @@
                                     </div>
                                     <div class="modal-body">
                                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
-                                                onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">SIGN IN</button>
+                                                onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'"
+                                                style="color: hsl(270, 50%, 60%);">SIGN IN</button>
                                         <button type="button" class="button ms-1" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
-                                                onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'">SIGN UP</button>
+                                                onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signup' %}'"
+                                                style="color: hsl(270, 50%, 60%);">SIGN UP</button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Click outside the box to go back without sign in</p>
+                                        <p style="color: hsl(270, 50%, 60%);">Click outside the box to go back without sign in</p>
                                     </div>
                                 </div>
                             </div>
