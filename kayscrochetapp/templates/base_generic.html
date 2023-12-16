@@ -88,16 +88,10 @@
             color: white; height: 1.6rem;">
             HELP?
         </button>
-            <!-- Install PWA button for authenticated users -->
-        <button id="installButton" class="button align-items-center ms-1 text-center
-            d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5rem;
-            height: 1.6rem; border: 0.0625rem solid white; color: white; display: none;">
+        <button type="button" class="button bg-danger-subtle" data-bs-toggle="modal"
+            data-bs-target="#exampleModalTwo" style="width: 5rem; border: 0.0625rem solid white;
+            color: white; height: 1.6rem;">
             InstallApp
-        </button>
-        <button id="installSafariButton" class="button align-items-center ms-1 text-center
-            d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 5.5rem;
-            height: 1.6rem; border: 0.0625rem solid white; color: white;">
-            InstallSafari
         </button>
     </div>
 
@@ -121,6 +115,34 @@
                     <p>Click InstallApp to install Kay's Crochet app on your device(works on Chrome and Edge on all
                          devices. In other browsers go to the browser menu and click install app. In Apple's Safari,
                             click share and then add to homescreen).</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Help Modal -->
+    <div class="modal" id="exampleModalTwo" tabindex="-1" aria-labelledby="exampleModalLabelTwo" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabelTwo">To Install Kay's Crochet App Click Here:</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <!-- Help Content -->
+                        <!-- Install PWA buttons-->
+                    <button id="installButton" class="button align-items-center ms-1 text-center
+                        d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 28rem;
+                        height: 1.6rem; border: 0.0625rem solid white; color: black; display: none;">
+                        Install App On Chrome And Edge
+                    </button>
+                    <button id="installSafariButton" class="button align-items-center ms-1 text-center
+                        d-flex align-items-center justify-content-center bg-danger-subtle" style="width: 28rem;
+                        height: 1.6rem; border: 0.0625rem solid white; color: black;">
+                        Install App On Safari(Works with Apple Devices)
+                    </button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="button" data-bs-dismiss="modal">CLOSE</button>
@@ -215,7 +237,7 @@
             alert('The app is already installed on your home screen.');
         } else if (window.navigator.userAgent.toLowerCase().includes('safari') && !window.navigator.standalone) {
             // If the browser is Safari, show instructions to add to home screen
-            alert('To install the app, click the Share button at the bottom of the Safari browser, then choose "Add to Home Screen".');
+            alert('To install the app, click the Share button in the Safari browser, then choose Add to Home Screen.');
         } else {
             // For other browsers or platforms, prompt the user to use the standard install button
             deferredInstallPrompt.prompt();
