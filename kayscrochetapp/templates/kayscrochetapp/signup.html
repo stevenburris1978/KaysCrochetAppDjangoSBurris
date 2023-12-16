@@ -3,18 +3,22 @@
 {% block title %}Sign Up - Kay's Crochet{% endblock %}
 
 {% block content %}
-    <div class="flex-grow-1">
+    <div class="flex-grow-1" style="color: hsl(270, 50%, 60%);">
         <form method="post">
-            <fieldset>
-                <legend>SIGN UP FOR KAY'S CROCHET:</legend>
+            <fieldset style="border: 0.0625rem solid hsl(270, 50%, 60%);">
+            <legend style="  color: hsl(270, 50%, 60%);
+                    text-shadow: 2px 2px 6px rgba(100, 100, 150, 0.9); /* Darkened shadow color and closer position */
+                    background: linear-gradient(90deg, hsl(270, 50%, 60%), hsl(270, 50%, 80%));
+                    -webkit-background-clip: text;
+                    background-clip: text;">SIGN UP FOR KAY'S CROCHET:</legend>
                 {% csrf_token %}
                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                 {{ form.as_p }}
-                <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">Sign Up</button>
+                <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit" style="color: hsl(270, 50%, 60%);">Sign Up</button>
                 <p>Click Sign In if You Have Already Created an Account</p>
                 <div>
                     <button type="button" class="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
-                            onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'">Sign In</button>
+                            onmouseout="this.style.boxShadow='none'" onclick="window.location.href = '{% url 'kayscrochetapp:signin' %}'" style="color: hsl(270, 50%, 60%);">Sign In</button>
                 </div>
             </fieldset>
         </form>

@@ -4,18 +4,23 @@
 {% block title %}Cart{% endblock %}
 
 {% block content %}
-<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
+<button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'" style="color: hsl(270, 50%, 60%);">ADD ITEMS</button>
 <form method="post" id="removeItemForm">
     {% csrf_token %}
-    <fieldset>
-        <legend><h1 style="text-transform: uppercase;">Cart</h1></legend>
+    <fieldset style="color: hsl(270, 50%, 60%); border: 0.0625rem solid hsl(270, 50%, 60%);">
+        <legend><h1 style="text-transform: uppercase; color: hsl(270, 50%, 60%);
+          text-shadow: 2px 2px 6px rgba(100, 100, 150, 0.9);
+          background: linear-gradient(90deg, hsl(270, 50%, 60%), hsl(270, 50%, 80%));
+          -webkit-background-clip: text;
+          background-clip: text;">Cart</h1></legend>
       {% if items %}
-        <ul>
+        <ul style="">
           {% for cart_item in items %}
            <li id="item_{{ cart_item.item.pk }}">
                 <h4 style="text-transform: uppercase;">{{ cart_item.item.item_title }}</h4>
                 {% if cart_item.item.image %}
-                    <img src="{{ cart_item.item.image.url }}" alt="{{ cart_item.item.item_title }}" style="width: 40%; height: auto;">
+                    <img src="{{ cart_item.item.image.url }}" alt="{{ cart_item.item.item_title }}" title="{{ item.item_title }}"
+                         style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                 {% endif %}<br>
                 Quantity: {{ cart_item.quantity }}<br>
                 Price Each: ${{ cart_item.price|floatformat:2 }}<br>
@@ -26,10 +31,14 @@
                 {% endif %}
                <div class="d-flex justify-content-left align-items-center">
                    <div>
-                        <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"><a href="{% url 'kayscrochetapp:detail' cart_item.item.id %}" style="text-decoration: none; color: black;">DETAILS</a></button>
+                        <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'">
+                            <a href="{% url 'kayscrochetapp:detail' cart_item.item.id %}" style="text-decoration: none;
+                            color: hsl(270, 50%, 60%);">DETAILS</a></button>
                    </div>
                    <div>
-                        <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" onclick="removeItem('{{ cart_item.item.pk }}')">REMOVE</button>
+                        <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
+                                onmouseout="this.style.boxShadow='none'" onclick="removeItem('{{ cart_item.item.pk }}')"
+                                style="color: hsl(270, 50%, 60%);">REMOVE</button>
                    </div>
                </div>
             </li>
@@ -37,8 +46,8 @@
         </ul>
         {% if items|sum_attribute:'total_price' %}
             <h3>Total Cart Price:</h3><p id="totalCartPrice"> ${{ items|sum_attribute:'total_price'|floatformat:2 }}</p>
-            <p>Sales tax is not included.<br>Shipping is included for the US only. <br>Items are not shipped outside of the US.<br>There are no refunds and no returns.</p>
-        <fieldset>
+            <p>Sales tax is not included.<br>Shipping is included for the US only. <br>Items are not shipped outside the US.<br>There are no refunds and no returns.</p>
+        <fieldset style="border: 0.0625rem solid hsl(270, 50%, 60%);">
             <legend><h3 style="text-transform: uppercase;">ADDRESS FORM</h3></legend>
             <!-- Add Address Form -->
             <label for="full_name">Full Name:</label>
@@ -52,7 +61,7 @@
             <label for="zip_code">Zip Code:</label>
             <input type="text" id="zip_code" name="zip_code" required><br>
         </fieldset>
-        <fieldset>
+        <fieldset style="border: 0.0625rem solid hsl(270, 50%, 60%);">
             <legend><h3 style="text-transform: uppercase;">PAYMENT CARD</h3></legend>
             <!-- Add Stripe Payment Form -->
             <form id="stripe-form">
@@ -60,8 +69,8 @@
                 <div id="card-element"></div>
                 <div class="d-flex justify-content-left align-items-center">
                     <button id="submit-button" type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
-                            onmouseout="this.style.boxShadow='none'">PAY NOW</button>
-                    <p style="margin: 1rem">Payment Secured by <a href="https://www.stripe.com" target="_blank">Stripe</a></p>
+                            onmouseout="this.style.boxShadow='none'" style="color: hsl(270, 50%, 60%);">PAY NOW</button>
+                    <p style="margin: 1rem; color: hsl(270, 50%, 60%);">Payment Secured by <a href="https://www.stripe.com" target="_blank">Stripe</a></p>
                 </div>
                 <p>An invoice will be emailed to you upon payment.</p>
                 <p>We do not ever share any of your personal information.</p>
@@ -76,7 +85,7 @@
     </fieldset>
 </form>
 <button type="button" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"
-        class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'">ADD ITEMS</button>
+        class="button ms-2" onclick="window.location.href = '{% url 'kayscrochetapp:index' %}'" style="color: hsl(270, 50%, 60%);">ADD ITEMS</button>
 
 <!-- Include Stripe.js script -->
 <script src="https://js.stripe.com/v3/"></script>

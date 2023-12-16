@@ -7,26 +7,34 @@
 <form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">ADD TO CART</button>
+    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit" style="color: hsl(270, 50%, 60%);">ADD TO CART</button>
 </form>
 <form action="{% url 'kayscrochetapp:like' item.id %}" method="post">
 {% csrf_token %}
-    <fieldset>
-        <legend><h1 style="text-transform: uppercase;">{{ item.item_title }} Details</h1></legend>
+    <fieldset style="color: hsl(270, 50%, 60%); border: 0.0625rem solid hsl(270, 50%, 60%);">
+        <legend><h1 style="text-transform: uppercase;   color: hsl(270, 50%, 60%);
+              text-shadow: 2px 2px 6px rgba(100, 100, 150, 0.9); /* Darkened shadow color and closer position */
+              background: linear-gradient(90deg, hsl(270, 50%, 60%), hsl(270, 50%, 80%));
+              -webkit-background-clip: text;
+              background-clip: text;">{{ item.item_title }} Details</h1></legend>
             <div style="padding: .5rem">
                 {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                    <img src="{{ item.image.url }}" alt="{{ item.item_title }}" title="{{ item.item_title }}"
+                         style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                 {% endif %}
                 {% if item.image2 %}
-                    <img src="{{ item.image2.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                    <img src="{{ item.image2.url }}" alt="{{ item.item_title }}" title="{{ item.item_title }}"
+                         style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                 {% endif %}
             </div>
             <div style="padding: .5rem">
                 {% if item.image3 %}
-                    <img src="{{ item.image3.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                    <img src="{{ item.image3.url }}" alt="{{ item.item_title }}" title="{{ item.item_title }}"
+                         style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                 {% endif %}
                 {% if item.image4 %}
-                    <img src="{{ item.image4.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                    <img src="{{ item.image4.url }}" alt="{{ item.item_title }}" title="{{ item.item_title }}"
+                         style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                 {% endif %}
             </div>
         <h4>Description:</h4>
@@ -77,7 +85,7 @@
 <form method="post" action="{% url 'kayscrochetapp:add_to_cart' pk=item.pk %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">ADD TO CART</button>
+    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit" style="color: hsl(270, 50%, 60%);">ADD TO CART</button>
 </form>
 
 <script>

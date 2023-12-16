@@ -6,8 +6,12 @@
 {% block content %}
 
 <form>
-    <fieldset>
-        <legend><h1 style="text-transform: uppercase;">{{ item.item_title }} STYLE VOTES</h1></legend>
+    <fieldset style="color: hsl(270, 50%, 60%); border: 0.0625rem solid hsl(270, 50%, 60%);">
+        <legend><h1 style="text-transform: uppercase;   color: hsl(270, 50%, 60%);
+              text-shadow: 2px 2px 6px rgba(100, 100, 150, 0.9); /* Darkened shadow color and closer position */
+              background: linear-gradient(90deg, hsl(270, 50%, 60%), hsl(270, 50%, 80%));
+              -webkit-background-clip: text;
+              background-clip: text;">{{ item.item_title }} STYLE VOTES</h1></legend>
         {% if item.image %}
             <img src="{{ item.image.url }}" alt="{{ item.item_title }}">
         {% endif %}

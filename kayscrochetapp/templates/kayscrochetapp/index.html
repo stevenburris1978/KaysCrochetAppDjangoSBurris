@@ -3,8 +3,11 @@
 {% block title %}Kay's Crochet{% endblock %}
 
 {% block content %}
-    <h2 style="text-transform: uppercase;">All Items For Sale:</h2>
-
+    <h2 style="text-transform: uppercase;   color: hsl(270, 50%, 60%);
+          text-shadow: 2px 2px 6px rgba(100, 100, 150, 0.9); /* Darkened shadow color and closer position */
+          background: linear-gradient(90deg, hsl(270, 50%, 60%), hsl(270, 50%, 80%));
+          -webkit-background-clip: text;
+          background-clip: text;">All Items For Sale:</h2>
         <!-- Search form -->
     <input style="padding: .5rem; margin-left: 3rem; height: 1.5rem" type="text" id="search" placeholder="Search by item title">
 
@@ -13,24 +16,33 @@
         {% for item in latest_item_list %}
             <li>
                 <form>
-                    <fieldset>
+                    <fieldset style="color: hsl(270, 50%, 60%); border: 0.0625rem solid hsl(270, 50%, 60%);">
                         <legend><h3><button style="height: 1.8rem;" onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'"
                                             onmouseout="this.style.boxShadow='none'">
-                            <a style="text-decoration: none; text-transform: uppercase;" href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
+                            <a style="text-decoration: none; text-transform: uppercase;   color: hsl(270, 50%, 60%);
+                                text-shadow: 2px 2px 6px rgba(100, 100, 150, 0.9); /* Darkened shadow color and closer position */
+                                background: linear-gradient(90deg, hsl(270, 50%, 60%), hsl(270, 50%, 80%));
+                                -webkit-background-clip: text;
+                                background-clip: text;"
+                                href="{% url 'kayscrochetapp:detail' item.id %}">{{ item.item_title }}</a></button></h3></legend>
                         <div style="padding: .5rem">
                             {% if item.image %}
-                                <img src="{{ item.image.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                                <img src="{{ item.image.url }}" alt="{{ item.item_title|safe }}" title="{{ item.item_title }}"
+                                     style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                             {% endif %}
                             {% if item.image2 %}
-                                <img src="{{ item.image2.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                                <img src="{{ item.image2.url }}" alt="{{ item.item_title|safe }}" title="{{ item.item_title }}"
+                                     style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                             {% endif %}
                         </div>
                         <div style="padding: .5rem">
                             {% if item.image3 %}
-                                <img src="{{ item.image3.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                                <img src="{{ item.image3.url }}" alt="{{ item.item_title|safe }}" title="{{ item.item_title }}"
+                                     style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                             {% endif %}
                             {% if item.image4 %}
-                                <img src="{{ item.image4.url }}" alt="{{ item.item_title }}" style="width: 40%; height: auto;">
+                                <img src="{{ item.image4.url }}" alt="{{ item.item_title|safe }}" title="{{ item.item_title }}"
+                                     style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                             {% endif %}
                         </div>
                         <h4>Description:</h4>

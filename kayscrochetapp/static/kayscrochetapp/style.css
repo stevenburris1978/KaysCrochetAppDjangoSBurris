@@ -1,11 +1,8 @@
-li a {
-    color: darkblue;
-}
-
 body {
     background: white url("images/background.png") no-repeat center center fixed;
     background-size: cover;
     width: 100%;
+    color: hsl(270, 50%, 60%);
 }
 
 nav {
@@ -18,16 +15,12 @@ h2 {
     text-transform: uppercase;
 }
 
-h2 {
-    text-transform: uppercase;
-}
-
 input {
     margin: .5rem;
 }
 
 fieldset {
-    border: 0.0625rem solid #000;
+    border: 0.0625rem solid hsl(270, 50%, 60%);
     padding: 0.3125rem;
     margin: .5rem;
     border-radius: 0.3125rem;
@@ -55,7 +48,6 @@ button {
     align-items: center;
     justify-content: center;
     background-color: lavenderblush;
-    color: black;
 }
 
 .button:hover {
@@ -92,5 +84,6 @@ textarea {
 input, textarea {
     font-size: 1rem;
 }
+
 
 

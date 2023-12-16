@@ -8,7 +8,8 @@
 <form method="post" action="{% url 'kayscrochetapp:signout' %}">
     {% csrf_token %}
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'" type="submit">SignOut</button>
+    <button onmouseover="this.style.boxShadow='0 0 10px rgba(0, 0, 0, 0.5)'" onmouseout="this.style.boxShadow='none'"
+            type="submit" style="color: hsl(270, 50%, 60%);">SignOut</button>
 </form>
 </body>
 </html>
