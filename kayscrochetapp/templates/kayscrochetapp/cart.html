@@ -20,7 +20,7 @@
                 <h4 style="text-transform: uppercase;">{{ cart_item.item.item_title }}</h4>
                 {% if cart_item.item.image %}
                     <img src="{{ cart_item.item.image.url }}" alt="{{ cart_item.item.item_title }}" title="{{ item.item_title }}"
-                         style="width: 40%; height: auto; border: 0.0625rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
+                         style="width: 40%; height: auto; border: 0.1rem solid hsl(270, 50%, 60%); border-radius: 0.3125rem;">
                 {% endif %}<br>
                 Quantity: {{ cart_item.quantity }}<br>
                 Price Each: ${{ cart_item.price|floatformat:2 }}<br>
