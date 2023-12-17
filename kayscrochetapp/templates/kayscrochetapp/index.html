@@ -52,11 +52,11 @@
                         <div class="d-flex justify-content-left align-items-center">
                             <div>
                                 {% if user.is_authenticated %}
-                                    <a href="javascript:void(0);" class="like-icon text-dark" data-item-id="{{ item.id }}">
+                                    <a href="javascript:void(0);" class="like-icon text-dark" data-item-id="{{ item.id }}" title="Click To Like">
                                         <i class="fa fa-heart fa-2x" style="color: red;"></i>
                                     </a>
                                 {% else %}
-                                    <span class="like-icon" data-bs-toggle="modal" data-bs-target="#loginModal" title="Must be logged in to like">
+                                    <span class="like-icon" data-bs-toggle="modal" data-bs-target="#loginModal" title="Must Be Logged In To like">
                                         <i class="fa fa-heart fa-2x" style="color: red; cursor: pointer;"></i>
                                     </span>
                                 {% endif %}
